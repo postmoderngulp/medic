@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import '../../Navigation/NavigatorClass.dart';
 import '../Api/Api.dart';
-import '../entity/analyse.dart';
 import '../entity/person.dart';
 import 'package:medic/Domain/Hive/hive.dart';
 
@@ -21,7 +20,6 @@ class createCardModel {
   void createCardUser(BuildContext context, String name, String surname,
       String patronymic, String dob, int gender) async {
     createUser(name, surname, patronymic, dob, gender);
-    goToMainScreen(context);
     final api = Api();
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: FluttSecureStorage.key);

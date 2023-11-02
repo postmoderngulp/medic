@@ -13,8 +13,8 @@ class emailCodePasswordModel {
   void sendRecoveryCode(
       String email, String recoveryCode, BuildContext context) async {
     final api = Api();
-    goToInputCode(context);
     const storage = FlutterSecureStorage();
+    goToInputCode(context);
     final token = await api.sendRecoveryCode(email, recoveryCode);
     await storage.write(key: FluttSecureStorage.key, value: token);
   }

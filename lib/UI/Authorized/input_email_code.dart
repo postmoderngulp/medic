@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:provider/provider.dart';
@@ -34,58 +35,69 @@ class EmailCodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<emailCodePasswordModel>();
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 68, right: 300),
-          child: SizedBox(width: 32, height: 32, child: BackButton()),
-        ),
         Padding(
-          padding: const EdgeInsets.only(top: 120),
-          child: Column(
-            children: [
-              Text(
-                "Введите код из E-mail",
-                style: TexxtStyle.buttonStyleBlack,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 80, top: 20),
-                child: Row(
-                  children: [
-                    const SizedBox(
-                        width: 48, height: 48, child: inputEmailCodeFirst()),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const SizedBox(
-                        width: 48, height: 48, child: inputEmailCodeSecond()),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const SizedBox(
-                        width: 48, height: 48, child: inputEmailCodeThird()),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: inputEmailCodeFour(
-                          email: email,
-                        )),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Text(
-                  "Отправить код повторно можно",
-                  style: TexxtStyle.subSubTitle,
-                ),
-              ),
-              const timeWidget()
-            ],
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.w,
+            vertical: 24.h,
           ),
-        )
+          child: const SizedBox(width: 32, height: 32, child: BackButton()),
+        ),
+        SizedBox(height: 132.h),
+        Column(
+          children: [
+            Text(
+              "Введите код из E-mail",
+              style: TexxtStyle.buttonStyleBlack,
+            ),
+            SizedBox(
+              height: 24.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: 44.w,
+                    height: 48.h,
+                    child: const inputEmailCodeFirst()),
+                SizedBox(
+                  width: 10.w,
+                ),
+                SizedBox(
+                    width: 48.w,
+                    height: 48.h,
+                    child: const inputEmailCodeSecond()),
+                SizedBox(
+                  width: 10.w,
+                ),
+                SizedBox(
+                    width: 48.w,
+                    height: 48.h,
+                    child: const inputEmailCodeThird()),
+                SizedBox(
+                  width: 10.w,
+                ),
+                SizedBox(
+                    width: 48.w,
+                    height: 48.h,
+                    child: inputEmailCodeFour(
+                      email: email,
+                    )),
+              ],
+            ),
+            SizedBox(
+              height: 16.h,
+            ),
+            Text(
+              "Отправить код повторно можно",
+              style: TexxtStyle.subSubTitle,
+            ),
+            const timeWidget()
+          ],
+        ),
       ],
     );
   }
@@ -127,7 +139,7 @@ class _timeWidgetState extends State<timeWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5),
+      padding: EdgeInsets.symmetric(vertical: 5.h),
       child: Text("будет через $sec сек", style: TexxtStyle.subSubTitle),
     );
   }
@@ -163,12 +175,8 @@ class inputEmailCodeFirst extends StatelessWidget {
       onEditingComplete: () => FocusScope.of(context).nextFocus(),
       autofocus: true,
       onChanged: (value) {
-        if (value.length == 1) {
-          FocusScope.of(context).nextFocus();
-        }
-        if (value.length < 1) {
-          model.recoveryCode += value;
-        }
+        model.recoveryCode += value;
+        FocusScope.of(context).nextFocus();
       },
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.center,
@@ -193,7 +201,7 @@ class inputEmailCodeSecond extends StatelessWidget {
         if (value.length == 1) {
           FocusScope.of(context).nextFocus();
         }
-        if (value.length < 1) {
+        if (value.isEmpty) {
           model.recoveryCode += value;
         }
       },
@@ -220,7 +228,7 @@ class inputEmailCodeThird extends StatelessWidget {
         if (value.length == 1) {
           FocusScope.of(context).nextFocus();
         }
-        if (value.length < 1) {
+        if (value.isEmpty) {
           model.recoveryCode += value;
         }
       },
@@ -252,7 +260,7 @@ class inputEmailCodeFour extends StatelessWidget {
           FocusScope.of(context).unfocus();
           model.sendRecoveryCode(email, model.recoveryCode, context);
         }
-        if (value.length < 1) {
+        if (value.isEmpty) {
           model.recoveryCode += value;
         }
       },

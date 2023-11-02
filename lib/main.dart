@@ -1,27 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:medic/Navigation/NavigatorClass.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'Domain/Api/Api.dart';
 import 'Domain/models/first_window_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   NavigateService serviceNavigate = NavigateService();
-  runApp(CupertinoApp(
-    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-      DefaultMaterialLocalizations.delegate,
-      DefaultWidgetsLocalizations.delegate,
-    ],
-    initialRoute: serviceNavigate.initialRoute,
-    routes: serviceNavigate.routes,
-    debugShowCheckedModeBanner: false,
-    home: const MyApp(),
+  runApp(ScreenUtilInit(
+    builder: (BuildContext context, child) => CupertinoApp(
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
+      initialRoute: serviceNavigate.initialRoute,
+      routes: serviceNavigate.routes,
+      debugShowCheckedModeBanner: false,
+      home: const MyApp(),
+    ),
+    designSize: const Size(375, 812),
   ));
 }
 
@@ -53,14 +55,21 @@ class _firstWidgetEnterState extends State<firstWidgetEnter> {
           backgroundColor: Colors.white,
           resizeToAvoidBottomInset: false,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 59.h,
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 103, left: 25),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                ),
                 child: Row(
                   children: [
                     Image.asset("assets/hello.png"),
-                    const SizedBox(
-                      width: 5,
+                    SizedBox(
+                      width: 5.w,
                     ),
                     Text(
                       "Добро пожаловать!",
@@ -69,52 +78,64 @@ class _firstWidgetEnterState extends State<firstWidgetEnter> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 23.h,
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 20, right: 70),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                ),
                 child: Text(
-                  "Войдите, чтобы пользоваться функциями",
+                  "Войдите, чтобы пользоваться функциями приложения",
                   style: TexxtStyle.subTitle,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 250),
-                child: Text(
-                  "приложения",
-                  style: TexxtStyle.subTitle,
-                ),
+              SizedBox(
+                height: 64.h,
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 245, top: 65),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                ),
                 child: Text(
                   "Вход по E-mail",
                   style: TexxtStyle.subSubTitle,
                 ),
               ),
-              SizedBox(
-                  width: 335,
-                  height: 48,
-                  child: CupertinoTextField(
-                    onChanged: (value) {
-                      model.email = value;
-                      setState(() {
-                        emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(model.email);
-                      });
-                    },
-                    placeholder: "example@mail.ru",
-                    placeholderStyle: TexxtStyle.placeHolderSTyle,
-                    decoration: const BoxDecoration(
-                      color: colorrs.greyy,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  )),
-              const SizedBox(
-                height: 30,
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                ),
+                child: SizedBox(
+                    width: 335.w,
+                    height: 48.h,
+                    child: CupertinoTextField(
+                      onChanged: (value) {
+                        model.email = value;
+                        setState(() {
+                          emailValid = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(model.email);
+                        });
+                      },
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 14.w, vertical: 14.h),
+                      placeholder: "example@mail.ru",
+                      placeholderStyle: TexxtStyle.placeHolderSTyle,
+                      decoration: const BoxDecoration(
+                        color: colorrs.greyy,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    )),
               ),
               SizedBox(
-                  width: 335,
-                  height: 56,
+                height: 32.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: SizedBox(
+                  width: 335.w,
+                  height: 56.h,
                   child: ElevatedButton(
                     style: ButtonStyle(
                         elevation: const MaterialStatePropertyAll(0),
@@ -130,18 +151,30 @@ class _firstWidgetEnterState extends State<firstWidgetEnter> {
                       "Далее",
                       style: TexxtStyle.buttonStyleWhite,
                     ),
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(top: 240),
-                child: Text(
-                  "Или войдите с помощью",
-                  style: TexxtStyle.subSubTitle,
+                  ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: SizedBox(
-                    width: 335, height: 56, child: YandexEnterButton()),
+              SizedBox(
+                height: 238.h,
+              ),
+              Column(
+                children: [
+                  Center(
+                    child: Text(
+                      "Или войдите с помощью",
+                      style: TexxtStyle.subSubTitle,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16.h,
+                    ),
+                    child: SizedBox(
+                        width: 335.w,
+                        height: 60.h,
+                        child: const YandexEnterButton()),
+                  ),
+                ],
               ),
             ],
           )),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/Domain/entity/analyse.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
@@ -34,59 +35,64 @@ class subOneOfferScreen extends StatelessWidget {
       price += model.listBasket[i].price;
     }
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 310, top: 60),
-            child: const SizedBox(width: 32, height: 32, child: BackButton()),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30, top: 20),
-            child: Row(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 52.h,
+            ),
+            const SizedBox(width: 32, height: 32, child: BackButton()),
+            SizedBox(
+              height: 24.h,
+            ),
+            Row(
               children: [
                 Text(
                   "Корзина",
                   style: TexxtStyle.title,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 190),
-                  child: CupertinoButton(
-                      child: const ImageIcon(
-                        AssetImage("assets/deleteBasket.png"),
-                        color: colorrs.someGreyy,
-                      ),
-                      onPressed: () => model.clearBasket(context)),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: CupertinoButton(
+                        child: const ImageIcon(
+                          AssetImage("assets/deleteBasket.png"),
+                          color: colorrs.someGreyy,
+                        ),
+                        onPressed: () => model.clearBasket(context)),
+                  ),
                 ),
               ],
             ),
-          ),
-          const ListProducts(),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Row(
-                children: [
-                  Text(
-                    "Сумма",
-                    style: TexxtStyle.title,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 200),
-                    child: Text(
-                      "$price ₽",
-                      style: TexxtStyle.title,
-                    ),
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: 32.h,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 120, bottom: 1),
-            child: SizedBox(
-                width: 335,
-                height: 56,
+            const ListProducts(),
+            SizedBox(
+              height: 40.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Сумма",
+                  style: TexxtStyle.title,
+                ),
+                Text(
+                  "$price ₽",
+                  style: TexxtStyle.title,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 168.h,
+            ),
+            SizedBox(
+                width: 335.w,
+                height: 64.h,
                 child: CupertinoButton.filled(
                   onPressed: () => model.goToPatienceOrder(context),
                   child: Text(
@@ -94,8 +100,8 @@ class subOneOfferScreen extends StatelessWidget {
                     style: TexxtStyle.buttonStyleW,
                   ),
                 )),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -138,11 +144,10 @@ class ListProducts extends StatelessWidget {
       shrinkWrap: true,
       itemCount: list.length,
       itemBuilder: (context, index) => Padding(
-        padding:
-            const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+        padding: EdgeInsets.only(bottom: 16.h),
         child: SizedBox(
-            width: 335,
-            height: 136,
+            width: 335.w,
+            height: 138.h,
             child: basketsElementProducts(
               index: index,
               listSort: list,
@@ -183,97 +188,96 @@ class basketsElementProducts extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, left: 16),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  height: 16.h,
+                ),
+                Expanded(
                   child: Text(
                     "${listSort[index].title}",
                     softWrap: true,
                     style: TexxtStyle.HeadlineMedium,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50),
-                child: CupertinoButton(
+                CupertinoButton(
                     alignment: Alignment.topRight,
-                    child: const ImageIcon(
+                    child: ImageIcon(
                       AssetImage("assets/Delete.png"),
                       color: colorrs.someGreyy,
+                      size: 20.w,
                     ),
                     onPressed: () =>
                         model.deleteElement(listSort[index], context)),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 35, left: 16),
-            child: Row(
+              ],
+            ),
+            SizedBox(
+              height: 28.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '${listSort[index].price} ₽',
                   style: TexxtStyle.priceElementText,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 145),
-                  child: Row(
-                    children: [
-                      Text(
-                        "$countVal Пациент",
-                        style: TexxtStyle.blackSubTitle,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Container(
-                          width: 64,
-                          height: 32,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: colorrs.greyy),
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  if (countVal != 0) {
-                                    model.minCount(listSort[index], context);
-                                  }
-                                },
-                                child: const ImageIcon(
-                                  AssetImage("assets/min.png"),
-                                  color: colorrs.iconGreyy,
-                                  size: 23,
-                                ),
-                              ),
-                              const ImageIcon(
-                                AssetImage("assets/Divider.png"),
+                Row(
+                  children: [
+                    Text(
+                      "$countVal Пациент",
+                      style: TexxtStyle.blackSubTitle,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Container(
+                        width: 64.w,
+                        height: 32.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: colorrs.greyy),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (countVal != 0) {
+                                  model.minCount(listSort[index], context);
+                                }
+                              },
+                              child: ImageIcon(
+                                AssetImage("assets/min.png"),
                                 color: colorrs.iconGreyy,
-                                size: 16,
+                                size: 23.w,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  model.plusCount(listSort[index]);
-                                },
-                                child: const ImageIcon(
-                                  AssetImage("assets/pluss.png"),
-                                  color: colorrs.iconGreyy,
-                                  size: 23,
-                                ),
+                            ),
+                            ImageIcon(
+                              AssetImage("assets/Divider.png"),
+                              color: colorrs.iconGreyy,
+                              size: 16.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                model.plusCount(listSort[index]);
+                              },
+                              child: ImageIcon(
+                                AssetImage("assets/pluss.png"),
+                                color: colorrs.iconGreyy,
+                                size: 23.w,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

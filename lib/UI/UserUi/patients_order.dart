@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/Domain/entity/analyse.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
@@ -31,38 +32,43 @@ class subPatienceOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<patienceOrderModel>();
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 60, right: 310),
-            child: BackButton(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 100),
-            child: Text(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 16.h,
+            ),
+            const BackButton(),
+            SizedBox(
+              height: 24.h,
+            ),
+            Text(
               "Оформление заказа",
               style: TexxtStyle.title,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 285),
-            child: Text(
+            SizedBox(
+              height: 32.h,
+            ),
+            Text(
               "Адрес *",
               style: TexxtStyle.subSubTitle,
             ),
-          ),
-          const ChooseAdressInputField(),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 250),
-            child: Text(
+            const ChooseAdressInputField(),
+            SizedBox(
+              height: 16.h,
+            ),
+            Text(
               "Дата и время*",
               style: TexxtStyle.subSubTitle,
             ),
-          ),
-          ChooseDateAndTimeInputField(),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 25),
-            child: Row(
+            ChooseDateAndTimeInputField(),
+            SizedBox(
+              height: 32.h,
+            ),
+            Row(
               children: [
                 Text(
                   "Кто будет сдавать анализы?",
@@ -74,150 +80,136 @@ class subPatienceOrder extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: SizedBox(
-                width: 335,
-                child: listPatient(
-                  model: model,
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: addPatientButton(
+            SizedBox(
+              height: 16.h,
+            ),
+            listPatient(
               model: model,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30, right: 280),
-            child: Text(
+            SizedBox(
+              height: 16.h,
+            ),
+            addPatientButton(
+              model: model,
+            ),
+            SizedBox(
+              height: 32.h,
+            ),
+            Text(
               "Телефон *",
               style: TexxtStyle.subSubTitle,
             ),
-          ),
-          const numberPhoneInputField(),
-          Padding(
-            padding: const EdgeInsets.only(left: 25),
-            child: Row(
+            const numberPhoneInputField(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Комментарий",
                   style: TexxtStyle.subSubTitle,
                 ),
-                const SizedBox(
-                  width: 210,
-                ),
                 CupertinoButton(
-                    child: const ImageIcon(
+                    child: ImageIcon(
                       AssetImage("assets/male.png"),
                       color: Colors.black,
+                      size: 24.w,
                     ),
                     onPressed: () {})
               ],
             ),
-          ),
-          const stayWishField(),
-          Padding(
-            padding: const EdgeInsets.only(left: 25),
-            child: Row(
+            const stayWishField(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Оплата Apple Pay",
                   style: TexxtStyle.textMedium,
                 ),
-                const SizedBox(
-                  width: 170,
-                ),
                 CupertinoButton(
                   onPressed: () {},
-                  child: const ImageIcon(
-                    AssetImage("assets/rightIcon.png"),
+                  child: ImageIcon(
+                    const AssetImage("assets/rightIcon.png"),
                     color: colorrs.someGreyy,
+                    size: 20.w,
                   ),
                 )
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 25),
-            child: Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Промокод",
                   style: TexxtStyle.promoText,
                 ),
-                const SizedBox(
-                  width: 218,
-                ),
                 CupertinoButton(
                   onPressed: () {},
-                  child: const ImageIcon(
-                    AssetImage("assets/rightIcon.png"),
+                  child: ImageIcon(
+                    const AssetImage("assets/rightIcon.png"),
                     color: colorrs.someGreyy,
+                    size: 20.w,
                   ),
                 )
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15),
-            child: SizedBox(
-              width: 335,
-              height: 56,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(
-                        model.addressValide &&
-                                model.commentValide &&
-                                model.dayValide &&
-                                model.personValide &&
-                                model.phoneValide &&
-                                model.priceValide &&
-                                model.timeValide &&
-                                model.entranceValide &&
-                                model.flatValide &&
-                                model.floorValide &&
-                                model.heightValide &&
-                                model.intercomValide &&
-                                model.longitudeValide &&
-                                model.widthValide
-                            ? colorrs.accent
-                            : colorrs.inactiveAccent),
-                    elevation: const MaterialStatePropertyAll(0),
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)))),
-                onPressed: () => model.addressValide &&
-                        model.commentValide &&
-                        model.dayValide &&
-                        model.personValide &&
-                        model.phoneValide &&
-                        model.priceValide &&
-                        model.timeValide &&
-                        model.entranceValide &&
-                        model.flatValide &&
-                        model.floorValide &&
-                        model.heightValide &&
-                        model.intercomValide &&
-                        model.longitudeValide &&
-                        model.widthValide
-                    ? model.createOffer(
-                        context,
-                        model.adress,
-                        model.dob.toString(),
-                        model.personList,
-                        model.phone,
-                        model.price,
-                        model.comment)
-                    : null,
-                child: Text(
-                  "Заказать",
-                  style: TexxtStyle.buttonStyleWhite,
+            Padding(
+              padding: EdgeInsets.only(bottom: 32.h),
+              child: SizedBox(
+                width: 335.w,
+                height: 56.h,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                          model.addressValide &&
+                                  model.commentValide &&
+                                  model.dayValide &&
+                                  model.personValide &&
+                                  model.phoneValide &&
+                                  model.priceValide &&
+                                  model.timeValide &&
+                                  model.entranceValide &&
+                                  model.flatValide &&
+                                  model.floorValide &&
+                                  model.heightValide &&
+                                  model.intercomValide &&
+                                  model.longitudeValide &&
+                                  model.widthValide
+                              ? colorrs.accent
+                              : colorrs.inactiveAccent),
+                      elevation: const MaterialStatePropertyAll(0),
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)))),
+                  onPressed: () => model.addressValide &&
+                          model.commentValide &&
+                          model.dayValide &&
+                          model.personValide &&
+                          model.phoneValide &&
+                          model.priceValide &&
+                          model.timeValide &&
+                          model.entranceValide &&
+                          model.flatValide &&
+                          model.floorValide &&
+                          model.heightValide &&
+                          model.intercomValide &&
+                          model.longitudeValide &&
+                          model.widthValide
+                      ? model.createOffer(
+                          context,
+                          model.adress,
+                          model.dob.toString(),
+                          model.personList,
+                          model.phone,
+                          model.price,
+                          model.comment)
+                      : null,
+                  child: Text(
+                    "Заказать",
+                    style: TexxtStyle.buttonStyleWhite,
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -253,8 +245,8 @@ class ChooseAdressInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<patienceOrderModel>();
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 48.h,
       child: GestureDetector(
         onTap: () => showModalBottomSheet<dynamic>(
           shape: const RoundedRectangleBorder(
@@ -274,7 +266,7 @@ class ChooseAdressInputField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 14),
+            padding: EdgeInsets.symmetric(horizontal: 14.w),
             child: Align(
               alignment: Alignment.centerLeft,
               child: model.addressValide &&
@@ -301,15 +293,31 @@ class ChooseAdressInputField extends StatelessWidget {
   }
 }
 
-class ChooseDateAndTimeInputField extends StatelessWidget {
+class ChooseDateAndTimeInputField extends StatefulWidget {
   ChooseDateAndTimeInputField({super.key});
+
+  @override
+  State<ChooseDateAndTimeInputField> createState() =>
+      _ChooseDateAndTimeInputFieldState();
+}
+
+class _ChooseDateAndTimeInputFieldState
+    extends State<ChooseDateAndTimeInputField> {
+  DateTime dateTime = DateTime.now();
+
   int val = -1;
+
   @override
   Widget build(BuildContext context) {
+    var nextDay = dateTime.day + 1;
+    List<String> dateList = [
+      'Сегодня, ${dateTime.day} cентября',
+      'Завтра, ${nextDay} cентября'
+    ];
     final model = context.watch<patienceOrderModel>();
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 48.h,
       child: GestureDetector(
         onTap: () => showModalBottomSheet<dynamic>(
           shape: const RoundedRectangleBorder(
@@ -325,94 +333,180 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
                       topLeft: Radius.circular(24),
                       topRight: Radius.circular(24))),
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24, left: 20),
-                    child: Row(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Дата и время",
                           style: TexxtStyle.title2Text,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 150),
-                          child: ElevatedButton(
-                            onPressed: () => Navigator.pop(context),
-                            style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              maximumSize: const Size(55, 55),
-                              minimumSize: const Size(32, 32),
-                              backgroundColor: Colors.transparent,
-                            ),
-                            child: Image.asset("assets/cancelButton.png"),
-                          ),
-                        )
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, bottom: 16),
-                    child: Text(
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
                       "Выберите дату",
                       style: TexxtStyle.subSubTitle,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Center(
+                    Center(
                         child: SizedBox(
-                            width: 335,
-                            height: 48,
-                            child: chooseDateDropField(
-                              model: model,
-                            ))),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, bottom: 5),
-                    child: Text(
-                      "Выберите время",
-                      style: TexxtStyle.subSubTitle,
+                      width: 335.w,
+                      height: 56.h,
+                      child: Material(
+                        child: ValueListenableBuilder(
+                            valueListenable: model.dropValue,
+                            builder: (BuildContext context, String value, _) {
+                              return DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10.0.w, vertical: 15.0.h),
+                                  fillColor: colorrs.greyy,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent, width: 0)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent, width: 0)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent, width: 0)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Colors.transparent, width: 0)),
+                                ),
+                                isExpanded: true,
+                                hint: Text(
+                                  'Сегодня, ${dateTime.day} cентября',
+                                  style: TexxtStyle.blackSubTitle,
+                                ),
+                                icon: const ImageIcon(
+                                    AssetImage("assets/dropDownIcon.png")),
+                                value: (value.isEmpty) ? null : value,
+                                onChanged: (choice) {
+                                  setState(() {
+                                    model.dropValue.value = choice.toString();
+                                    choice.toString() ==
+                                            'Сегодня, ${dateTime.day} cентября'
+                                        ? model.dob = DateTime(model.dob.year,
+                                            model.dob.month, dateTime.day)
+                                        : model.dob = DateTime(model.dob.year,
+                                            model.dob.month, nextDay);
+                                    model.setDayValide();
+                                    print(model.dob);
+                                  });
+                                },
+                                items: dateList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e),
+                                        ))
+                                    .toList(),
+                              );
+                            }),
+                      ),
+                    )),
+                    SizedBox(
+                      height: 10.h,
                     ),
-                  ),
-                  SizedBox(
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 5.h),
+                      child: Text(
+                        "Выберите время",
+                        style: TexxtStyle.subSubTitle,
+                      ),
+                    ),
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      child: listTimes(
-                        model: model,
-                      )),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 24, top: 20),
-                      child: SizedBox(
-                        width: 335,
-                        height: 56,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  model.dayValide && model.timeValide
-                                      ? colorrs.accent
-                                      : colorrs.inactiveAccent),
-                              elevation: const MaterialStatePropertyAll(0),
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadiusDirectional.circular(
-                                              10)))),
-                          onPressed: () => model.dayValide && model.timeValide
-                              ? Navigator.of(context).pop
-                              : null,
-                          child: Text(
-                            "Подтвердить",
-                            style: TexxtStyle.buttonStyleWhite,
+                      height: 40.h,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: listTime.length,
+                          itemBuilder: (context, index) => Padding(
+                                padding: EdgeInsets.only(left: 16.w),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      model.setIndex(index);
+                                      model.dob = DateTime(
+                                          model.dob.year,
+                                          model.dob.month,
+                                          model.dob.day,
+                                          int.parse(
+                                              listTime[index].substring(0, 2)));
+                                      model.setTimeValide();
+                                      print(model.dob);
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 70.w,
+                                    height: 40.h,
+                                    decoration: BoxDecoration(
+                                        color: model.index == index
+                                            ? colorrs.accent
+                                            : colorrs.greyy,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Center(
+                                      child: Text(
+                                        listTime[index],
+                                        style: model.index == index
+                                            ? TexxtStyle.bankTxtStyleWhite
+                                            : TexxtStyle.bankTxtStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 24.h, top: 20.h),
+                        child: SizedBox(
+                          width: 335.w,
+                          height: 56.h,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                    model.dayValide && model.timeValide
+                                        ? colorrs.accent
+                                        : colorrs.inactiveAccent),
+                                elevation: const MaterialStatePropertyAll(0),
+                                shape: MaterialStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                10)))),
+                            onPressed: () => model.dayValide && model.timeValide
+                                ? Navigator.of(context).pop
+                                : null,
+                            child: Text(
+                              "Подтвердить",
+                              style: TexxtStyle.buttonStyleWhite,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             );
           },
@@ -423,7 +517,7 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 14),
+            padding: EdgeInsets.only(left: 14.w),
             child: Align(
               alignment: Alignment.centerLeft,
               child: model.dayValide && model.timeValide
@@ -453,8 +547,9 @@ class listPatient extends StatelessWidget {
       shrinkWrap: true,
       itemCount: model.personList.length,
       itemBuilder: (context, int index) => Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.symmetric(vertical: 16.h),
         child: SizedBox(
+          width: 335.w,
           child: dropWidget(
             model: model,
             index: index,
@@ -498,8 +593,8 @@ class _dropWidgetState extends State<dropWidget> {
               child: Row(
                 children: [
                   SizedBox(
-                    width: 40,
-                    height: 48,
+                    width: 40.w,
+                    height: 48.h,
                     child: Container(
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -512,7 +607,7 @@ class _dropWidgetState extends State<dropWidget> {
                     ),
                   ),
                   Container(
-                      width: 260,
+                      width: 260.w,
                       decoration: const BoxDecoration(color: colorrs.greyy),
                       child: Text(
                           "${widget.model.personList[widget.index].surname} ${widget.model.personList[widget.index].name}")),
@@ -522,23 +617,24 @@ class _dropWidgetState extends State<dropWidget> {
                               topRight: Radius.circular(10),
                               bottomRight: Radius.circular(10)),
                           color: colorrs.greyy),
-                      child: const ImageIcon(
-                        AssetImage("assets/dropDownIcon.png"),
-                        color: colorrs.iCGreyy,
-                      )),
+                      child: ImageIcon(
+                          const AssetImage("assets/dropDownIcon.png"),
+                          color: colorrs.iCGreyy,
+                          size: 20.w)),
                 ],
               ),
             ),
           )
         : Container(
-            width: 335,
+            width: 335.w,
             decoration: BoxDecoration(
                 border: Border.all(color: colorrs.greyy, width: 1),
                 borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -546,8 +642,8 @@ class _dropWidgetState extends State<dropWidget> {
                           el = !el;
                         }),
                         child: SizedBox(
-                          width: 267,
-                          height: 48,
+                          width: 267.w,
+                          height: 48.h,
                           child: Container(
                             decoration: const BoxDecoration(
                                 color: colorrs.greyy,
@@ -556,8 +652,8 @@ class _dropWidgetState extends State<dropWidget> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 40,
-                                  height: 48,
+                                  width: 40.w,
+                                  height: 48.h,
                                   child: Container(
                                     decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.only(
@@ -572,7 +668,7 @@ class _dropWidgetState extends State<dropWidget> {
                                   ),
                                 ),
                                 Container(
-                                    width: 190,
+                                    width: 190.w,
                                     decoration: const BoxDecoration(
                                         color: colorrs.greyy),
                                     child: Text(
@@ -583,9 +679,11 @@ class _dropWidgetState extends State<dropWidget> {
                                             topRight: Radius.circular(10),
                                             bottomRight: Radius.circular(10)),
                                         color: colorrs.greyy),
-                                    child: const ImageIcon(
-                                      AssetImage("assets/dropDownIcon.png"),
+                                    child: ImageIcon(
+                                      const AssetImage(
+                                          "assets/dropDownIcon.png"),
                                       color: colorrs.iCGreyy,
+                                      size: 20.w,
                                     )),
                               ],
                             ),
@@ -593,12 +691,13 @@ class _dropWidgetState extends State<dropWidget> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.only(left: 16.w),
                         child: GestureDetector(
                           onTap: () => widget.model.delUser(widget.index),
-                          child: const ImageIcon(
-                            AssetImage("assets/removePatient.png"),
+                          child: ImageIcon(
+                            const AssetImage("assets/removePatient.png"),
                             color: colorrs.greyy,
+                            size: 16.w,
                           ),
                         ),
                       )
@@ -621,8 +720,8 @@ class addPatientButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 48.h,
       child: ElevatedButton(
         style: const ButtonStyle(
             elevation: MaterialStatePropertyAll(0),
@@ -662,8 +761,8 @@ class addPatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 48.h,
       child: ElevatedButton(
         style: const ButtonStyle(
             elevation: MaterialStatePropertyAll(0),
@@ -689,8 +788,8 @@ class numberPhoneInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<patienceOrderModel>();
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 48.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.phone,
         onChanged: (value) {
@@ -715,14 +814,14 @@ class stayWishField extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<patienceOrderModel>();
     return SizedBox(
-      width: 335,
-      height: 128,
+      width: 335.w,
+      height: 128.h,
       child: CupertinoTextField(
         onChanged: (value) {
           model.comment = value;
           model.setCommentValide();
         },
-        padding: const EdgeInsets.only(left: 14, top: 14),
+        padding: EdgeInsets.only(left: 14.w, top: 14.h),
         placeholder: "Можете оставить свои пожелания",
         placeholderStyle: TexxtStyle.placeHolderSTyle,
         textAlign: TextAlign.left,
@@ -772,170 +871,211 @@ class _adressBannerState extends State<adressBanner> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24), topRight: Radius.circular(24))),
       width: MediaQuery.of(context).size.width,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20),
-          child: Row(
-            children: [
-              Text(
-                "Адрес сдачи анализов",
-                style: TexxtStyle.title2Text,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 120),
-                child: Image.asset("assets/mapImage.png"),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Column(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 270),
+                padding: EdgeInsets.only(
+                  top: 24.h,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Адрес сдачи анализов",
+                      style: TexxtStyle.title2Text,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: Image.asset("assets/mapImage.png"),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Ваш адрес",
+                    style: TexxtStyle.subSubTitle,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Center(child: addressInputField(model: widget.model)),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 5.h),
+                        child: Text(
+                          "Долгота",
+                          style: TexxtStyle.subSubTitle,
+                        ),
+                      ),
+                      Center(
+                        child: longitudeInputField(
+                          model: widget.model,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 5.h,
+                          ),
+                          child: Text(
+                            "Широта",
+                            style: TexxtStyle.subSubTitle,
+                          ),
+                        ),
+                        Center(
+                          child: latitudeInputField(
+                            model: widget.model,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5.h),
+                          child: Text(
+                            "Высота",
+                            style: TexxtStyle.subSubTitle,
+                          ),
+                        ),
+                        Center(
+                          child: heightInputField(
+                            model: widget.model,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5.h),
+                          child: Text(
+                            "Квартира",
+                            style: TexxtStyle.subSubTitle,
+                          ),
+                        ),
+                        Center(
+                          child: flatInputField(
+                            model: widget.model,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 5.h,
+                            ),
+                            child: Text(
+                              "Подъезд",
+                              style: TexxtStyle.subSubTitle,
+                            ),
+                          ),
+                          Center(
+                            child: entranceInputField(
+                              model: widget.model,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 18.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5.h),
+                            child: Text(
+                              "Этаж",
+                              style: TexxtStyle.subSubTitle,
+                            ),
+                          ),
+                          Center(
+                            child: floorInputField(
+                              model: widget.model,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 5.h, top: 10.h),
                 child: Text(
-                  "Ваш адрес",
+                  "Домофон",
                   style: TexxtStyle.subSubTitle,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: addressInputField(model: widget.model),
+              Center(
+                child: domofonInputField(
+                  model: widget.model,
+                ),
               ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 25),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5, right: 90),
-                      child: Text(
-                        "Долгота",
-                        style: TexxtStyle.subSubTitle,
-                      ),
-                    ),
-                    longitudeInputField(
-                      model: widget.model,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5, right: 90),
-                      child: Text(
-                        "Широта",
-                        style: TexxtStyle.subSubTitle,
-                      ),
-                    ),
-                    latitudeInputField(
-                      model: widget.model,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 2),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10, bottom: 5),
-                        child: Text(
-                          "Высота",
-                          style: TexxtStyle.subSubTitle,
-                        ),
-                      ),
-                      heightInputField(
-                        model: widget.model,
-                      ),
-                    ],
+              saveAddress(
+                model: widget.model,
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.h, bottom: 24.h),
+                  child: ConfirmButton(
+                    model: widget.model,
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5, right: 50),
-                      child: Text(
-                        "Квартира",
-                        style: TexxtStyle.subSubTitle,
-                      ),
-                    ),
-                    flatInputField(
-                      model: widget.model,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5, left: 5),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5, right: 50),
-                        child: Text(
-                          "Подъезд",
-                          style: TexxtStyle.subSubTitle,
-                        ),
-                      ),
-                      entranceInputField(
-                        model: widget.model,
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 75, bottom: 5),
-                      child: Text(
-                        "Этаж",
-                        style: TexxtStyle.subSubTitle,
-                      ),
-                    ),
-                    floorInputField(
-                      model: widget.model,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 270, bottom: 5, top: 10),
-          child: Text(
-            "Домофон",
-            style: TexxtStyle.subSubTitle,
-          ),
-        ),
-        domofonInputField(
-          model: widget.model,
-        ),
-        saveAddress(
-          model: widget.model,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 24),
-          child: ConfirmButton(
-            model: widget.model,
-          ),
-        ),
-      ]),
+              ),
+            ]),
+      ),
     );
   }
 }
@@ -952,24 +1092,22 @@ class _saveAddressState extends State<saveAddress> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, top: 5),
+      padding: EdgeInsets.only(left: 30.w, top: 5.h),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             "Сохранить этот адрес?",
             style: TexxtStyle.HeadlineMedium,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 100),
-            child: CupertinoSwitch(
-                value: widget.model.saveVal,
-                activeColor: colorrs.accent,
-                onChanged: (value) {
-                  setState(() {
-                    widget.model.saveVal = value;
-                  });
-                }),
-          )
+          CupertinoSwitch(
+              value: widget.model.saveVal,
+              activeColor: colorrs.accent,
+              onChanged: (value) {
+                setState(() {
+                  widget.model.saveVal = value;
+                });
+              }),
         ],
       ),
     );
@@ -983,8 +1121,8 @@ class addressInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 72.h,
       child: CupertinoTextField(
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
@@ -1010,8 +1148,8 @@ class domofonInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 335,
-      height: 48,
+      width: 335.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -1037,8 +1175,8 @@ class longitudeInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 130,
-      height: 48,
+      width: 130.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -1065,8 +1203,8 @@ class latitudeInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 130,
-      height: 48,
+      width: 130.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -1092,8 +1230,8 @@ class heightInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 50,
-      height: 48,
+      width: 50.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -1119,8 +1257,8 @@ class flatInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
-      height: 48,
+      width: 100.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -1146,8 +1284,8 @@ class entranceInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
-      height: 48,
+      width: 100.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
@@ -1173,8 +1311,8 @@ class floorInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
-      height: 48,
+      width: 100.w,
+      height: 72.h,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).unfocus(),
@@ -1237,36 +1375,34 @@ class _PatientsBannerState extends State<PatientsBanner> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 24, left: 20),
+            padding: EdgeInsets.only(top: 24.h, left: 20.w),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Выбор пациента",
                   style: TexxtStyle.title2Text,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 150),
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      maximumSize: const Size(55, 55),
-                      minimumSize: const Size(32, 32),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    child: Image.asset("assets/cancelButton.png"),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    maximumSize: const Size(55, 55),
+                    minimumSize: const Size(32, 32),
+                    backgroundColor: Colors.transparent,
                   ),
+                  child: Image.asset("assets/cancelButton.png"),
                 )
               ],
             ),
           ),
           SizedBox(
-            width: 335,
+            width: 335.w,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: listPerson.length,
               itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(top: 16),
+                padding: EdgeInsets.only(top: 16.h),
                 child: GestureDetector(
                   onTap: () => setState(() {
                     val = index;
@@ -1277,8 +1413,8 @@ class _PatientsBannerState extends State<PatientsBanner> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(children: [
                       SizedBox(
-                        width: 40,
-                        height: 48,
+                        width: 40.w,
+                        height: 48.h,
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: const BorderRadius.only(
@@ -1304,97 +1440,19 @@ class _PatientsBannerState extends State<PatientsBanner> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(top: 20.h),
             child: addPatButton(
               model: widget.model,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30, bottom: 15),
+            padding: EdgeInsets.only(top: 30.h, bottom: 15.h),
             child: confirmButton(
               model: widget.model,
               index: val,
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class chooseDateDropField extends StatefulWidget {
-  patienceOrderModel model;
-  DateTime dateTime = DateTime.now();
-  chooseDateDropField({super.key, required this.model});
-
-  @override
-  State<chooseDateDropField> createState() => _chooseDateDropFieldState();
-}
-
-class _chooseDateDropFieldState extends State<chooseDateDropField> {
-  @override
-  Widget build(BuildContext context) {
-    var nextDay = widget.dateTime.day + 1;
-    List<String> dateList = [
-      'Сегодня, ${widget.dateTime.day} cентября',
-      'Завтра, ${nextDay} cентября'
-    ];
-    return SizedBox(
-      width: 335,
-      height: 48,
-      child: Material(
-        child: ValueListenableBuilder(
-            valueListenable: widget.model.dropValue,
-            builder: (BuildContext context, String value, _) {
-              return DropdownButtonFormField(
-                decoration: InputDecoration(
-                  filled: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 15.0),
-                  fillColor: colorrs.greyy,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.transparent, width: 0)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.transparent, width: 0)),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.transparent, width: 0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.transparent, width: 0)),
-                ),
-                isExpanded: true,
-                hint: Text(
-                  'Сегодня, ${widget.dateTime.day} cентября',
-                  style: TexxtStyle.blackSubTitle,
-                ),
-                icon: const ImageIcon(AssetImage("assets/dropDownIcon.png")),
-                value: (value.isEmpty) ? null : value,
-                onChanged: (choice) {
-                  widget.model.dropValue.value = choice.toString();
-                  choice.toString() ==
-                          'Сегодня, ${widget.dateTime.day} cентября'
-                      ? widget.model.dob = DateTime(widget.model.dob.year,
-                          widget.model.dob.month, widget.dateTime.day)
-                      : widget.model.dob = DateTime(widget.model.dob.year,
-                          widget.model.dob.month, nextDay);
-                  widget.model.setDayValide();
-                  print(widget.model.dob);
-                },
-                items: dateList
-                    .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
-                        ))
-                    .toList(),
-              );
-            }),
       ),
     );
   }
@@ -1410,58 +1468,6 @@ List<String> listTime = [
   "19:00"
 ];
 
-class listTimes extends StatefulWidget {
-  patienceOrderModel model;
-  listTimes({super.key, required this.model});
-
-  @override
-  State<listTimes> createState() => _listTimesState();
-}
-
-class _listTimesState extends State<listTimes> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: listTime.length,
-        itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.model.index = index;
-                  });
-                  widget.model.dob = DateTime(
-                      widget.model.dob.year,
-                      widget.model.dob.month,
-                      widget.model.dob.day,
-                      int.parse(listTime[index].substring(0, 2)));
-                  widget.model.setTimeValide();
-                  print(widget.model.dob);
-                },
-                child: Container(
-                  width: 70,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: widget.model.index == index
-                          ? colorrs.accent
-                          : colorrs.greyy,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Center(
-                    child: Text(
-                      listTime[index],
-                      style: widget.model.index == index
-                          ? TexxtStyle.bankTxtStyleWhite
-                          : TexxtStyle.bankTxtStyle,
-                    ),
-                  ),
-                ),
-              ),
-            ));
-  }
-}
-
 class ConfirmButton extends StatelessWidget {
   patienceOrderModel model;
   ConfirmButton({super.key, required this.model});
@@ -1469,8 +1475,8 @@ class ConfirmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 335,
-      height: 56,
+      width: 335.w,
+      height: 56.h,
       child: ElevatedButton(
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(model.addressValide &&
@@ -1509,8 +1515,8 @@ class confirmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 335,
-      height: 56,
+      width: 335.w,
+      height: 56.h,
       child: ElevatedButton(
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(
@@ -1540,7 +1546,7 @@ class PatientsList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: model.personList.length,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(top: 16),
+        padding: EdgeInsets.symmetric(vertical: 16.h),
         child: patientEl(
           model: model,
           index: index,
@@ -1562,8 +1568,8 @@ class patientEl extends StatelessWidget {
           color: colorrs.greyy, borderRadius: BorderRadius.circular(10)),
       child: Row(children: [
         SizedBox(
-          width: 40,
-          height: 48,
+          width: 40.w,
+          height: 48.h,
           child: Container(
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -1597,7 +1603,7 @@ class listAnalyses extends StatelessWidget {
         shrinkWrap: true,
         itemCount: list.length,
         itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.only(bottom: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: itemAnalyses(
               listAnalyse: list,
               index: index,
@@ -1619,14 +1625,16 @@ class _itemAnalysesState extends State<itemAnalyses> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 303,
+      width: 303.w,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: SizedBox(
-              width: 20,
-              height: 20,
+              width: 20.w,
+              height: 20.h,
               child: Material(
                 child: Checkbox(
                     shape: RoundedRectangleBorder(
@@ -1650,7 +1658,7 @@ class _itemAnalysesState extends State<itemAnalyses> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 5),
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
             child: Text(
               "${widget.listAnalyse[widget.index].price} ₽",
               style: TexxtStyle.blackSubTitle,

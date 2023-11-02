@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:provider/provider.dart';
-
 import '../../Domain/models/password_model.dart';
 
 class InputPassword extends StatelessWidget {
@@ -29,36 +29,46 @@ class PasswordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<passwordModel>();
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 50, left: 276),
-        child: TextButton(
-            style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(
-              Colors.transparent,
-            )),
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          SizedBox(
+            height: 40.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: TextButton(
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(
+                  Colors.transparent,
+                )),
+                child: Text(
+                  "Пропустить",
+                  style: TexxtStyle.followingTxtStyle,
+                ),
+                onPressed: () => model.goToCreateCard(context)),
+          ),
+          SizedBox(
+            height: 40.h,
+          ),
+          Center(
             child: Text(
-              "Пропустить",
-              style: TexxtStyle.followingTxtStyle,
+              "Создайте пароль",
+              style: TexxtStyle.title,
             ),
-            onPressed: () => model.goToCreateCard(context)),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Text(
-          "Создайте пароль",
-          style: TexxtStyle.title,
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Text(
-          "Для защиты ваших персональных данных",
-          style: TexxtStyle.subSubTitle,
-        ),
-      ),
-      const inputFieldPassword()
-    ]);
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          Center(
+            child: Text(
+              "Для защиты ваших персональных данных",
+              style: TexxtStyle.subSubTitle,
+            ),
+          ),
+          const inputFieldPassword()
+        ]);
   }
 }
 
@@ -77,13 +87,15 @@ class _inputFieldPasswordState extends State<inputFieldPassword> {
   var currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: SizedBox(
-              width: 130,
-              height: 18,
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 56.h,
+          ),
+          SizedBox(
+              width: 130.w,
+              height: 16.h,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
@@ -99,76 +111,78 @@ class _inputFieldPasswordState extends State<inputFieldPassword> {
                   ),
                 ),
               )),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 1.5,
-          child: Column(
-            children: [
-              Expanded(
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 12,
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  itemBuilder: (context, index) => Container(
-                    margin: const EdgeInsets.all(24),
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        color: index == 9
-                            ? null
-                            : index == 11
-                                ? Colors.transparent
-                                : colorrs.buttonGrey,
-                        shape: BoxShape.circle),
-                    child: Center(
-                      child: MaterialButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        enableFeedback: false,
-                        onPressed: () {
-                          setState(() {
-                            if (index == 11) {
-                              for (var i = 0; i < actives.length; i++) {
-                                actives[i] = false;
-                                currentIndex = 0;
-                              }
-                            }
-                            if (index != 11 && index != 9) {
-                              if (currentIndex >= 4) {
-                                inputText = "";
+          SizedBox(
+            width: 288.w,
+            height: 392.h,
+            child: Column(
+              children: [
+                Expanded(
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 12,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                    itemBuilder: (context, index) => Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 24.w, vertical: 24.h),
+                      width: 80.w,
+                      height: 80.h,
+                      decoration: BoxDecoration(
+                          color: index == 9
+                              ? null
+                              : index == 11
+                                  ? Colors.transparent
+                                  : colorrs.buttonGrey,
+                          shape: BoxShape.circle),
+                      child: Center(
+                        child: MaterialButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          enableFeedback: false,
+                          onPressed: () {
+                            setState(() {
+                              if (index == 11) {
                                 for (var i = 0; i < actives.length; i++) {
                                   actives[i] = false;
                                   currentIndex = 0;
                                 }
                               }
-                              actives[currentIndex] = true;
-                              currentIndex++;
-                              inputText +=
-                                  number[index == 10 ? index - 1 : index]
-                                      .toString();
-                            }
-                          });
-                        },
-                        child: index == 9
-                            ? const SizedBox()
-                            : index == 11
-                                ? Image.asset("assets/clearIcon.png")
-                                : Text(
-                                    "${number[index == 10 ? index - 1 : index]}",
-                                    style: TexxtStyle.buttonPaswordText,
-                                  ),
+                              if (index != 11 && index != 9) {
+                                if (currentIndex >= 4) {
+                                  inputText = "";
+                                  for (var i = 0; i < actives.length; i++) {
+                                    actives[i] = false;
+                                    currentIndex = 0;
+                                  }
+                                }
+                                actives[currentIndex] = true;
+                                currentIndex++;
+                                inputText +=
+                                    number[index == 10 ? index - 1 : index]
+                                        .toString();
+                              }
+                            });
+                          },
+                          child: index == 9
+                              ? const SizedBox()
+                              : index == 11
+                                  ? Image.asset("assets/clearIcon.png")
+                                  : Text(
+                                      "${number[index == 10 ? index - 1 : index]}",
+                                      style: TexxtStyle.buttonPaswordText,
+                                    ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -205,8 +219,8 @@ class _AnimationBoxState extends State<AnimationBox>
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Container(
-              width: 16,
-              height: 16,
+              width: 16.w,
+              height: 16.h,
               decoration: BoxDecoration(
                   border: Border.all(color: colorrs.accent, width: 1),
                   shape: BoxShape.circle,

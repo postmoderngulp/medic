@@ -50,6 +50,11 @@ class patienceOrderModel extends ChangeNotifier {
     _setup();
   }
 
+  void setIndex(int Index) {
+    index = Index;
+    notifyListeners();
+  }
+
   void _setup() async {
     if (!Hive.isAdapterRegistered(2)) {
       Hive.registerAdapter(personAdapter());
@@ -163,10 +168,9 @@ class patienceOrderModel extends ChangeNotifier {
       List<person> userList, String phone, int price, String comment) async {
     final api = Api();
     const storage = FlutterSecureStorage();
-    goToPaymentWidget(context);
     final token = await storage.read(key: FluttSecureStorage.key);
-    await api.createOrder(
-        adress, dob, userList, phone, price, comment, "fkgsdkg");
+    await api.createOrder(adress, dob, userList, phone, price, comment, token!);
+    goToPaymentWidget(context);
   }
 
   void addUser(person el) async {

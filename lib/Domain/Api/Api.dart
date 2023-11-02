@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:medic/Domain/entity/clientAddress.dart';
 import 'package:medic/Domain/entity/news.dart';
 import 'package:http/http.dart' as http;
@@ -100,10 +101,12 @@ class Api {
       'Content-Type': 'application/json',
       'Authorization': token
     };
+    final body = {};
     var endPoint = Uri.parse('http://192.168.144.66:8080/api/profile');
     final response = await http.put(
       endPoint,
       headers: headers,
+      body: json.encode(body),
     );
     print(response.statusCode);
     print(response.body);
@@ -143,5 +146,20 @@ class Api {
         await http.post(endPoint, headers: headers, body: jsonBody);
     print(response.statusCode);
     print(response.body);
+  }
+
+  Future loadicon(String token, File? imageFile) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('http://192.168.144.66:8080/api/profileIcon'));
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    };
+    var multipartFile =
+        await http.MultipartFile.fromPath('image', imageFile!.path);
+    request.files.add(multipartFile);
+    request.headers.addAll(headers);
+    final response = await request.send();
+    print(response.statusCode);
   }
 }

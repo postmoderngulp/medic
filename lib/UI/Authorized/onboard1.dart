@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/style/texxt_style.dart';
 import '../../Domain/models/OnBoard3Model.dart';
-import '../../Navigation/NavigatorClass.dart';
 import 'package:provider/provider.dart';
 
 int _currentPage = 0;
@@ -29,7 +29,6 @@ class pageViewWidget extends StatefulWidget {
 }
 
 class _pageViewWidgetState extends State<pageViewWidget> {
-  final int _numePage = 3;
   final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
@@ -44,52 +43,65 @@ class _pageViewWidgetState extends State<pageViewWidget> {
           });
         },
         children: [
-          Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30, bottom: 50, right: 100),
-                    child: TextButton(
-                        style: const ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                          Colors.transparent,
-                        )),
-                        child: Text(
-                          "Пропустить",
-                          style: TexxtStyle.followingTxtStyle,
-                        ),
-                        onPressed: () => _pageController.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn)),
-                  ),
-                  Image.asset("assets/blur_shape.png")
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: Text(
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 5.h),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30.w),
+                      child: TextButton(
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                            Colors.transparent,
+                          )),
+                          child: Text(
+                            "Пропустить",
+                            style: TexxtStyle.followingTxtStyle,
+                          ),
+                          onPressed: () => _pageController.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn)),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: SizedBox(
+                            width: 167.w,
+                            height: 163.h,
+                            child: Image.asset("assets/blur_shape.png")),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 60.h,
+                ),
+                Text(
                   "Анализы",
                   style: TexxtStyle.textLato,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Text(
+                SizedBox(
+                  height: 29.h,
+                ),
+                Text(
                   "Экспресс сбор и получение проб",
                   style: TexxtStyle.SubsubSubTitle,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Image.asset("assets/groupOne.png"),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Image.asset("assets/analyyze.png"),
-              )
-            ],
+                SizedBox(
+                  height: 60.h,
+                ),
+                Image.asset("assets/groupOne.png"),
+                SizedBox(
+                  height: 105.h,
+                ),
+                SizedBox(
+                    width: 204.w,
+                    height: 200.h,
+                    child: Image.asset("assets/analyyze.png")),
+              ],
+            ),
           ),
           Column(
             children: [
@@ -97,82 +109,105 @@ class _pageViewWidgetState extends State<pageViewWidget> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.only(left: 30, bottom: 50, right: 100),
-                    child: TextButton(
+                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 5.h),
+                    child: Align(
+                      child: TextButton(
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                            Colors.transparent,
+                          )),
+                          child: Text(
+                            "Пропустить",
+                            style: TexxtStyle.followingTxtStyle,
+                          ),
+                          onPressed: () => _pageController.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn)),
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: SizedBox(
+                          width: 167.w,
+                          height: 163.h,
+                          child: Image.asset("assets/blur_shape.png")),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
+              Text(
+                "Уведомления",
+                style: TexxtStyle.textLato,
+              ),
+              SizedBox(
+                height: 29.h,
+              ),
+              Text(
+                "Вы быстро узнаете о результатах",
+                style: TexxtStyle.SubsubSubTitle,
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
+              Image.asset("assets/groupTwo.png"),
+              SizedBox(
+                height: 105.h,
+              ),
+              SizedBox(
+                  width: 366.w,
+                  height: 217.h,
+                  child: Image.asset("assets/notification.png")),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 5.h),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30.w),
+                      child: TextButton(
                         style: const ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll(
                           Colors.transparent,
                         )),
                         child: Text(
-                          "Пропустить",
+                          "Завершить",
                           style: TexxtStyle.followingTxtStyle,
                         ),
-                        onPressed: () => _pageController.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn)),
-                  ),
-                  Image.asset("assets/blur_shape.png")
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: Text(
-                  "Уведомления",
-                  style: TexxtStyle.textLato,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Text(
-                  "Вы быстро узнаете о результатах",
-                  style: TexxtStyle.SubsubSubTitle,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Image.asset("assets/groupTwo.png"),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Image.asset("assets/notification.png"),
-              )
-            ],
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30, bottom: 50, right: 100),
-                    child: TextButton(
-                      style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(
-                        Colors.transparent,
-                      )),
-                      child: Text(
-                        "Завершить",
-                        style: TexxtStyle.followingTxtStyle,
+                        onPressed: () => model.goToMain(context),
                       ),
-                      onPressed: () => model.goToMain(context),
                     ),
-                  ),
-                  Image.asset("assets/blur_shape.png")
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: Text(
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: SizedBox(
+                            width: 167.w,
+                            height: 163.h,
+                            child: Image.asset("assets/blur_shape.png")),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 60.h,
+                ),
+                Text(
                   "Мониторинг",
                   style: TexxtStyle.textLato,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Column(
+                SizedBox(
+                  height: 29.h,
+                ),
+                Column(
                   children: [
                     Text(
-                      "Наши врачи всегда наблюдают",
+                      "Наши врачи всегда наблюдают ",
                       style: TexxtStyle.SubsubSubTitle,
                       softWrap: true,
                     ),
@@ -183,16 +218,19 @@ class _pageViewWidgetState extends State<pageViewWidget> {
                     ),
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Image.asset("assets/groupThree.png"),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Image.asset("assets/monitoring.png"),
-              )
-            ],
+                SizedBox(
+                  height: 42.h,
+                ),
+                Image.asset("assets/groupThree.png"),
+                SizedBox(
+                  height: 69.h,
+                ),
+                SizedBox(
+                    width: 359.w,
+                    height: 269.h,
+                    child: Image.asset("assets/monitoring.png")),
+              ],
+            ),
           ),
         ],
       ),

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../Navigation/NavigatorClass.dart';
 import '../../UI/Authorized/input_email_code.dart';
 import '../Api/Api.dart';
 
@@ -13,8 +11,8 @@ class firstWindowModel {
   void _setup() {}
 
   void sendEmail(String email, BuildContext context) async {
-    goToEmailCodeWidget(context, email);
     final api = Api();
+    goToEmailCodeWidget(context, email);
     await api.sendEmail(email);
   }
 

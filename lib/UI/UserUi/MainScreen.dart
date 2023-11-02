@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class MainScreen extends StatelessWidget {
         child: Material(
             child: ChangeNotifierProvider(
           create: (context) => ChooseTestModel(),
-          child: ListenableProvider(
+          child: ChangeNotifierProvider(
               create: (BuildContext context) => mainScreenModel(),
               child: const SubWidget()),
         )),
@@ -34,38 +35,55 @@ class SubWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<mainScreenModel>();
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Center(
-          child: Padding(
-            padding: EdgeInsets.only(top: 50),
-            child: SizedBox(width: 335, height: 48, child: FindAnalyzes()),
-          ),
+        SizedBox(
+          height: 24.h,
+        ),
+        Center(
+          child:
+              SizedBox(width: 335.w, height: 48.h, child: const FindAnalyzes()),
         ),
         Expanded(
             child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 32.h,
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 30, right: 200),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
                   'Акции и новости',
                   style: TexxtStyle.mainSubText,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20, left: 16),
-                child: SizedBox(height: 160, child: ListOfBanners()),
+              SizedBox(
+                height: 16.h,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 30, right: 200),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: SizedBox(height: 152.h, child: const ListOfBanners()),
+              ),
+              SizedBox(
+                height: 32.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
                   'Каталог анализов',
                   style: TexxtStyle.mainSubText,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10, top: 20),
-                child: SizedBox(height: 50, child: ButtonsWidgt()),
+              SizedBox(
+                height: 16.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: const ButtonsWidget(),
               ),
               const ListProducts(),
             ],
@@ -88,7 +106,7 @@ class FindAnalyzes extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTextField(
       prefix: Padding(
-        padding: const EdgeInsets.only(left: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Image.asset("assets/search.png"),
       ),
       placeholder: "Искать анализы",
@@ -118,12 +136,15 @@ class BannerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/Banner.png');
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: Image.asset('assets/Banner.png'),
+    );
   }
 }
 
-class ButtonsWidgt extends StatelessWidget {
-  const ButtonsWidgt({super.key});
+class ButtonsWidget extends StatelessWidget {
+  const ButtonsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +152,12 @@ class ButtonsWidgt extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(children: [
-        const SizedBox(
-          width: 16,
+        SizedBox(
+          width: 16.w,
         ),
         SizedBox(
-          width: 126,
-          height: 48,
+          width: 126.w,
+          height: 48.h,
           child: ElevatedButton(
             style: ButtonStyle(
                 elevation: const MaterialStatePropertyAll(0),
@@ -153,12 +174,12 @@ class ButtonsWidgt extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          width: 16,
+        SizedBox(
+          width: 16.w,
         ),
         SizedBox(
-          width: 78,
-          height: 48,
+          width: 78.w,
+          height: 48.h,
           child: ElevatedButton(
             style: ButtonStyle(
                 elevation: const MaterialStatePropertyAll(0),
@@ -175,12 +196,12 @@ class ButtonsWidgt extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          width: 16,
+        SizedBox(
+          width: 16.w,
         ),
         SizedBox(
-          width: 136,
-          height: 48,
+          width: 135.w,
+          height: 48.h,
           child: ElevatedButton(
             style: ButtonStyle(
                 elevation: const MaterialStatePropertyAll(0),
@@ -197,8 +218,8 @@ class ButtonsWidgt extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          width: 16,
+        SizedBox(
+          width: 16.w,
         ),
       ]),
     );
@@ -211,20 +232,22 @@ class ListProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<mainScreenModel>();
-    return ListView.builder(
-      physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: model.listAnalyse.length,
-      itemBuilder: (context, index) => Padding(
-        padding:
-            const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-        child: SizedBox(
-            width: 335,
-            height: 136,
+    return Center(
+      child: ListView.builder(
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: model.listAnalyse.length,
+        itemBuilder: (context, index) => Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+          child: SizedBox(
+            width: 335.w,
+            height: 136.h,
             child: ElementProducts(
               index: index,
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -236,7 +259,6 @@ class ElementProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<ChooseTestModel>();
     final modelTwo = context.watch<mainScreenModel>();
     return GestureDetector(
       onTap: () => showModalBottomSheet<dynamic>(
@@ -266,10 +288,14 @@ class ElementProducts extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(12))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 16.h,
+            ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Text(
                   "${modelTwo.listAnalyse[index].title}",
                   softWrap: true,
@@ -283,70 +309,87 @@ class ElementProducts extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   children: [
+                    SizedBox(
+                      height: 16.h,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 16, left: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${modelTwo.listAnalyse[index].days} дня',
                             style: TexxtStyle.Caption,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: Text(
-                              '${modelTwo.listAnalyse[index].price} ₽',
-                              style: TexxtStyle.priceElementText,
-                            ),
-                          )
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            '${modelTwo.listAnalyse[index].price} ₽',
+                            style: TexxtStyle.priceElementText,
+                          ),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30, left: 197),
-                      child: modelTwo.basketList
-                              .contains(modelTwo.listAnalyse[index])
-                          ? SizedBox(
-                              width: 96,
-                              height: 40,
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      elevation:
-                                          const MaterialStatePropertyAll(0),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              Colors.transparent),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1, color: colorrs.accent),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ))),
-                                  child: Text(
-                                    'Убрать',
-                                    style: TexxtStyle.buttonElementTextblue,
-                                  ),
-                                  onPressed: () =>
-                                      modelTwo.removeAnalyse(index)))
-                          : SizedBox(
-                              width: 96,
-                              height: 40,
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      elevation:
-                                          const MaterialStatePropertyAll(0),
-                                      backgroundColor:
-                                          const MaterialStatePropertyAll(
-                                              colorrs.accent),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)))),
-                                  child: Text(
-                                    'Добавить',
-                                    style: TexxtStyle.buttonElementText,
-                                  ),
-                                  onPressed: () => modelTwo.addAnalyse(index))),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15.w,
+                          ),
+                          child: modelTwo.basketList
+                                  .contains(modelTwo.listAnalyse[index])
+                              ? SizedBox(
+                                  width: 96.w,
+                                  height: 40.h,
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          elevation:
+                                              const MaterialStatePropertyAll(0),
+                                          backgroundColor:
+                                              const MaterialStatePropertyAll(
+                                                  Colors.transparent),
+                                          shape: MaterialStatePropertyAll(
+                                              RoundedRectangleBorder(
+                                            side: const BorderSide(
+                                                width: 1,
+                                                color: colorrs.accent),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ))),
+                                      child: Text(
+                                        'Убрать',
+                                        style: TexxtStyle.buttonElementTextblue,
+                                      ),
+                                      onPressed: () =>
+                                          modelTwo.removeAnalyse(index)))
+                              : SizedBox(
+                                  width: 96.w,
+                                  height: 40.h,
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          elevation:
+                                              const MaterialStatePropertyAll(0),
+                                          backgroundColor:
+                                              const MaterialStatePropertyAll(
+                                                  colorrs.accent),
+                                          shape: MaterialStatePropertyAll(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)))),
+                                      child: Text(
+                                        'Добавить',
+                                        style: TexxtStyle.buttonElementText,
+                                      ),
+                                      onPressed: () => modelTwo.addAnalyse(index))),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -373,28 +416,24 @@ class basketWidget extends StatelessWidget {
     return Container(
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 9,
-      child: SizedBox(
-        width: 335,
-        height: 56,
-        child: Center(
-          child: SizedBox(
-            width: 335,
-            height: 56,
-            child: TextButton.icon(
-              style: ButtonStyle(
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-                  backgroundColor:
-                      const MaterialStatePropertyAll(colorrs.accent)),
-              onPressed: () => model.goToBasket(context),
-              icon: const ImageIcon(
-                AssetImage("assets/basket.png"),
-                color: Color.fromARGB(255, 255, 255, 255),
-              ),
-              label: Text("В корзину                  $price ₽",
-                  style: TexxtStyle.buttonStyleWhite),
+      height: 104.h,
+      child: Center(
+        child: SizedBox(
+          width: 335.w,
+          height: 56.h,
+          child: TextButton.icon(
+            style: ButtonStyle(
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10))),
+                backgroundColor:
+                    const MaterialStatePropertyAll(colorrs.accent)),
+            onPressed: () => model.goToBasket(context),
+            icon: const ImageIcon(
+              AssetImage("assets/basket.png"),
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
+            label: Text("В корзину                  $price ₽",
+                style: TexxtStyle.buttonStyleWhite),
           ),
         ),
       ),
@@ -415,117 +454,109 @@ class bannerWidget extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24), topRight: Radius.circular(24))),
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 24, left: 20),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 24.h),
+            Row(
+              children: [
+                Expanded(
                   child: Text(
                     "${model.listAnalyse[index].title}",
                     style: TexxtStyle.title2Text,
                     softWrap: true,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, left: 50),
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    maximumSize: const Size(55, 55),
-                    minimumSize: const Size(32, 32),
-                    backgroundColor: Colors.transparent,
+                SizedBox(
+                  width: 55.w,
+                  height: 55.h,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    child: Image.asset("assets/cancelButton.png"),
                   ),
-                  child: Image.asset("assets/cancelButton.png"),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25, right: 280),
-            child: Text(
+              ],
+            ),
+            SizedBox(height: 20.h),
+            Text(
               "Описание",
               style: TexxtStyle.headlineText,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 18, top: 10),
-            child: Text(
+            SizedBox(height: 8.h),
+            Text(
               "${model.listAnalyse[index].description}",
               softWrap: true,
               style: TexxtStyle.subTitle,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 270, top: 15),
-            child: Text(
+            SizedBox(height: 16.h),
+            Text(
               "Подготовка",
               style: TexxtStyle.headlineText,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 18, top: 10),
-            child: Text(
+            Text(
               "${model.listAnalyse[index].preparation}",
               style: TexxtStyle.subTitle,
               softWrap: true,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 45, left: 20),
-            child: Row(
+            SizedBox(
+              height: 57.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Результаты через:",
                       style: TexxtStyle.Caption,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Text(
-                        "${model.listAnalyse[index].resultDuring} день",
-                        style: TexxtStyle.HeadlineMedium,
-                      ),
-                    )
+                    Text(
+                      "${model.listAnalyse[index].resultDuring} день",
+                      style: TexxtStyle.HeadlineMedium,
+                    ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Биоматериал:",
-                        style: TexxtStyle.Caption,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 25, top: 5),
-                        child: Text(
-                          "${model.listAnalyse[index].biomaterial}",
-                          style: TexxtStyle.HeadlineMedium,
-                        ),
-                      )
-                    ],
-                  ),
-                )
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Биоматериал:",
+                      style: TexxtStyle.Caption,
+                    ),
+                    Text(
+                      "${model.listAnalyse[index].biomaterial}",
+                      style: TexxtStyle.HeadlineMedium,
+                    ),
+                  ],
+                ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 24),
-            child: SizedBox(
-                width: 335,
-                height: 56,
-                child: addCardButton(
-                  index: index,
-                  model: model,
-                )),
-          )
-        ],
+            SizedBox(
+              height: 19.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 40.h),
+              child: SizedBox(
+                  width: 335.w,
+                  height: 56.h,
+                  child: addCardButton(
+                    index: index,
+                    model: model,
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }
