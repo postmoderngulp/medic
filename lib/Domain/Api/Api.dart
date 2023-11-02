@@ -29,16 +29,15 @@ class Api {
     final headers = {'Content-Type': 'application/json'};
     String jsonBody = json.encode(body);
     var endPoint = Uri.parse('http://192.168.144.66:8080/api/confirm');
-    final encoding = Encoding.getByName('utf-8');
     final response = await http.post(
       endPoint,
       headers: headers,
       body: jsonBody,
-      encoding: encoding,
     );
     final el = Token.fromJson(jsonDecode(response.body));
     print(response.statusCode);
     print(response.body);
+    print(el.token);
     return el.token;
   }
 
@@ -101,7 +100,13 @@ class Api {
       'Content-Type': 'application/json',
       'Authorization': token
     };
-    final body = {};
+    final body = {
+      "firstName": name,
+      "lastName": surname,
+      "patronymic": patronymic,
+      "dob": dob,
+      "gender": gender
+    };
     var endPoint = Uri.parse('http://192.168.144.66:8080/api/profile');
     final response = await http.put(
       endPoint,
@@ -133,9 +138,9 @@ class Api {
       'Authorization': token
     };
     Map<String, dynamic> body = {
-      "clientAddress": adress.toJson(),
+      "clientAddress": adress.toMap(),
       "date": date,
-      "patientsTakingTests": userList.map((person) => person.toJson()).toList(),
+      "patientsTakingTests": userList.map((person) => person.toMap()).toList(),
       "phone": phone,
       "price": price,
       "comment": comment,

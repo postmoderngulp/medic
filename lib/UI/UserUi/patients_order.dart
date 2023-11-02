@@ -1336,7 +1336,7 @@ List<person> listPerson = [
       name: "Эдуард",
       surname: "Тицкий",
       patronymic: "",
-      birthday: "",
+      birthday: "2023-11-02T08:01:16.559Z",
       gender: 0),
   person(
       name: "Елена",

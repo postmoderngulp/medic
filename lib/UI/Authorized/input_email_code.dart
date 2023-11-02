@@ -176,7 +176,10 @@ class inputEmailCodeFirst extends StatelessWidget {
       autofocus: true,
       onChanged: (value) {
         model.recoveryCode += value;
-        FocusScope.of(context).nextFocus();
+          FocusScope.of(context).nextFocus();
+
+
+
       },
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.center,
@@ -198,12 +201,8 @@ class inputEmailCodeSecond extends StatelessWidget {
       keyboardType: TextInputType.number,
       onEditingComplete: () => FocusScope.of(context).nextFocus(),
       onChanged: (value) {
-        if (value.length == 1) {
-          FocusScope.of(context).nextFocus();
-        }
-        if (value.isEmpty) {
-          model.recoveryCode += value;
-        }
+        model.recoveryCode += value;
+        FocusScope.of(context).nextFocus();
       },
       textAlign: TextAlign.center,
       textAlignVertical: TextAlignVertical.center,
@@ -225,12 +224,8 @@ class inputEmailCodeThird extends StatelessWidget {
       keyboardType: TextInputType.number,
       onEditingComplete: () => FocusScope.of(context).nextFocus(),
       onChanged: (value) {
-        if (value.length == 1) {
-          FocusScope.of(context).nextFocus();
-        }
-        if (value.isEmpty) {
-          model.recoveryCode += value;
-        }
+        model.recoveryCode += value;
+        FocusScope.of(context).nextFocus();
       },
       textAlign: TextAlign.center,
       textAlignVertical: TextAlignVertical.center,
@@ -252,17 +247,12 @@ class inputEmailCodeFour extends StatelessWidget {
     return CupertinoTextField(
       keyboardType: TextInputType.number,
       onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        model.sendRecoveryCode(email, model.recoveryCode, context);
+
       },
       onChanged: (value) {
-        if (value.length == 1) {
-          FocusScope.of(context).unfocus();
-          model.sendRecoveryCode(email, model.recoveryCode, context);
-        }
-        if (value.isEmpty) {
-          model.recoveryCode += value;
-        }
+        model.recoveryCode += value;
+        FocusScope.of(context).unfocus();
+        model.sendRecoveryCode(email, model.recoveryCode, context);
       },
       textAlign: TextAlign.center,
       textAlignVertical: TextAlignVertical.center,
