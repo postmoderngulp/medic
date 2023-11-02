@@ -12,8 +12,9 @@ class firstWindowModel {
 
   void sendEmail(String email, BuildContext context) async {
     final api = Api();
-    goToEmailCodeWidget(context, email);
     await api.sendEmail(email);
+    goToEmailCodeWidget(context, email);
+
   }
 
   void goToEmailCodeWidget(BuildContext context, String email) {

@@ -27,20 +27,20 @@ class person {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'name': name,
-      'surname': surname,
+      'firstName': name,
+      'lastName': surname,
       'patronymic': patronymic,
-      'birthday': birthday,
+      'dob': birthday,
       'gender': gender,
     };
   }
 
   factory person.fromMap(Map<String, dynamic> map) {
     return person(
-      name: map['name'] as String,
-      surname: map['surname'] as String,
+      name: map['firstName'] as String,
+      surname: map['lastName'] as String,
       patronymic: map['patronymic'] as String,
-      birthday: map['birthday'] as String,
+      birthday: map['dob'] as String,
       gender: map['gender'] as int,
     );
   }
