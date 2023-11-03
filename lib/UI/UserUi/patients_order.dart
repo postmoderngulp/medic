@@ -5,6 +5,7 @@ import 'package:medic/Domain/entity/analyse.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import '../../Domain/entity/person.dart';
+import '../../Domain/models/address_banner_model.dart';
 import '../../Domain/models/patience_order_model.dart';
 import 'package:provider/provider.dart';
 
@@ -255,8 +256,11 @@ class ChooseAdressInputField extends StatelessWidget {
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) {
-            return adressBanner(
-              model: model,
+            return ChangeNotifierProvider(
+              create: (context)=> addressBannerModel(),
+              child: adressBanner(
+                Model: model,
+              ),
             );
           },
         ),
@@ -836,8 +840,8 @@ class stayWishField extends StatelessWidget {
 }
 
 class adressBanner extends StatefulWidget {
-  patienceOrderModel model;
-  adressBanner({super.key, required this.model});
+  patienceOrderModel Model;
+  adressBanner({super.key,required this.Model});
 
   @override
   State<adressBanner> createState() => _adressBannerState();
@@ -845,21 +849,12 @@ class adressBanner extends StatefulWidget {
 
 class _adressBannerState extends State<adressBanner> {
   void setup() {
-    widget.model.addressValide = false;
-    widget.model.entranceValide = false;
-    widget.model.floorValide = false;
-    widget.model.flatValide = false;
-    widget.model.heightValide = false;
-    widget.model.intercomValide = false;
-    widget.model.longitudeValide = false;
-    widget.model.widthValide = false;
+
   }
 
   @override
   void dispose() {
-    if (!widget.model.saveVal) {
-      setup();
-    }
+
     super.dispose();
   }
 
@@ -910,7 +905,7 @@ class _adressBannerState extends State<adressBanner> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  Center(child: addressInputField(model: widget.model)),
+                  Center(child: addressInputField()),
                 ],
               ),
               SizedBox(height: 10.h),
@@ -931,7 +926,7 @@ class _adressBannerState extends State<adressBanner> {
                       ),
                       Center(
                         child: longitudeInputField(
-                          model: widget.model,
+
                         ),
                       ),
                     ],
@@ -953,7 +948,7 @@ class _adressBannerState extends State<adressBanner> {
                         ),
                         Center(
                           child: latitudeInputField(
-                            model: widget.model,
+
                           ),
                         ),
                       ],
@@ -974,7 +969,7 @@ class _adressBannerState extends State<adressBanner> {
                         ),
                         Center(
                           child: heightInputField(
-                            model: widget.model,
+
                           ),
                         ),
                       ],
@@ -999,7 +994,6 @@ class _adressBannerState extends State<adressBanner> {
                         ),
                         Center(
                           child: flatInputField(
-                            model: widget.model,
                           ),
                         ),
                       ],
@@ -1021,7 +1015,7 @@ class _adressBannerState extends State<adressBanner> {
                           ),
                           Center(
                             child: entranceInputField(
-                              model: widget.model,
+
                             ),
                           ),
                         ],
@@ -1042,7 +1036,7 @@ class _adressBannerState extends State<adressBanner> {
                           ),
                           Center(
                             child: floorInputField(
-                              model: widget.model,
+
                             ),
                           ),
                         ],
@@ -1060,18 +1054,16 @@ class _adressBannerState extends State<adressBanner> {
               ),
               Center(
                 child: domofonInputField(
-                  model: widget.model,
+
                 ),
               ),
               saveAddress(
-                model: widget.model,
+
               ),
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 10.h, bottom: 24.h),
-                  child: ConfirmButton(
-                    model: widget.model,
-                  ),
+                  child: ConfirmButton(Model: widget.Model,),
                 ),
               ),
             ]),
@@ -1081,8 +1073,7 @@ class _adressBannerState extends State<adressBanner> {
 }
 
 class saveAddress extends StatefulWidget {
-  patienceOrderModel model;
-  saveAddress({super.key, required this.model});
+  saveAddress({super.key,  });
 
   @override
   State<saveAddress> createState() => _saveAddressState();
@@ -1091,6 +1082,7 @@ class saveAddress extends StatefulWidget {
 class _saveAddressState extends State<saveAddress> {
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return Padding(
       padding: EdgeInsets.only(left: 30.w, top: 5.h),
       child: Row(
@@ -1101,12 +1093,10 @@ class _saveAddressState extends State<saveAddress> {
             style: TexxtStyle.HeadlineMedium,
           ),
           CupertinoSwitch(
-              value: widget.model.saveVal,
+              value: model.saveVal,
               activeColor: colorrs.accent,
               onChanged: (value) {
-                setState(() {
-                  widget.model.saveVal = value;
-                });
+                  model.setSaveValide(value);
               }),
         ],
       ),
@@ -1115,22 +1105,22 @@ class _saveAddressState extends State<saveAddress> {
 }
 
 class addressInputField extends StatelessWidget {
-  patienceOrderModel model;
-  addressInputField({super.key, required this.model});
+  addressInputField({super.key,  });
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 335.w,
       height: 72.h,
       child: CupertinoTextField(
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.address = value;
+          model.address = value;
           model.setAdresValide();
         },
         placeholder:
-            model.addressValide ? model.adress.address : "Перекопская 22к1",
+            model.address.isNotEmpty ? model.address : "Перекопская 22к1",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1142,11 +1132,11 @@ class addressInputField extends StatelessWidget {
 }
 
 class domofonInputField extends StatelessWidget {
-  patienceOrderModel model;
-  domofonInputField({super.key, required this.model});
+  domofonInputField({super.key,  });
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 335.w,
       height: 72.h,
@@ -1154,10 +1144,10 @@ class domofonInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.intercom = value;
+          model.intercom = value;
           model.setIntercomValide();
         },
-        placeholder: model.intercomValide ? model.adress.intercom : "188*2180",
+        placeholder: model.intercom.isNotEmpty ? model.intercom : "188*2180",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1169,11 +1159,11 @@ class domofonInputField extends StatelessWidget {
 }
 
 class longitudeInputField extends StatelessWidget {
-  patienceOrderModel model;
-  longitudeInputField({super.key, required this.model});
+  longitudeInputField({super.key,});
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 130.w,
       height: 72.h,
@@ -1181,11 +1171,11 @@ class longitudeInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.longitude = int.parse(value);
+          model.longitude = int.parse(value);
           model.setLongitudeValide();
         },
         placeholder:
-            model.longitudeValide ? "${model.adress.longitude}" : "188",
+        model.longitude != 0 ? "${model.longitude}" : "188",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1197,11 +1187,11 @@ class longitudeInputField extends StatelessWidget {
 }
 
 class latitudeInputField extends StatelessWidget {
-  patienceOrderModel model;
-  latitudeInputField({super.key, required this.model});
+  latitudeInputField({super.key,  });
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 130.w,
       height: 72.h,
@@ -1209,10 +1199,10 @@ class latitudeInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.width = int.parse(value);
+          model.width = int.parse(value);
           model.setWidthValide();
         },
-        placeholder: model.widthValide ? "${model.adress.width}" : "4",
+        placeholder: model.width != 0  ? "${model.width}" : "4",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1224,11 +1214,12 @@ class latitudeInputField extends StatelessWidget {
 }
 
 class heightInputField extends StatelessWidget {
-  patienceOrderModel model;
-  heightInputField({super.key, required this.model});
+
+  heightInputField({super.key,  });
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 50.w,
       height: 72.h,
@@ -1236,10 +1227,10 @@ class heightInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.height = int.parse(value);
+          model.height = int.parse(value);
           model.setHeightValide();
         },
-        placeholder: model.heightValide ? "${model.adress.height}" : "8",
+        placeholder: model.height != 0  ? "${model.height}" : "8",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1251,11 +1242,12 @@ class heightInputField extends StatelessWidget {
 }
 
 class flatInputField extends StatelessWidget {
-  patienceOrderModel model;
-  flatInputField({super.key, required this.model});
+
+  flatInputField({super.key,  });
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 100.w,
       height: 72.h,
@@ -1263,10 +1255,10 @@ class flatInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.flat = int.parse(value);
+          model.flat = int.parse(value);
           model.setFlatValide();
         },
-        placeholder: model.flatValide ? "${model.adress.flat}" : "188",
+        placeholder: model.flat != 0 ? "${model.flat}" : "188",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1278,11 +1270,12 @@ class flatInputField extends StatelessWidget {
 }
 
 class entranceInputField extends StatelessWidget {
-  patienceOrderModel model;
-  entranceInputField({super.key, required this.model});
+
+  entranceInputField({super.key, });
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 100.w,
       height: 72.h,
@@ -1290,10 +1283,10 @@ class entranceInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onChanged: (value) {
-          model.adress.entrance = int.parse(value);
+          model.entrance = int.parse(value);
           model.setEntranceValide();
         },
-        placeholder: model.entranceValide ? "${model.adress.entrance}" : "8",
+        placeholder: model.entrance != 0 ? "${model.entrance}" : "8",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1305,11 +1298,12 @@ class entranceInputField extends StatelessWidget {
 }
 
 class floorInputField extends StatelessWidget {
-  patienceOrderModel model;
-  floorInputField({super.key, required this.model});
+
+  floorInputField({super.key,});
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 100.w,
       height: 72.h,
@@ -1317,10 +1311,10 @@ class floorInputField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onEditingComplete: () => FocusScope.of(context).unfocus(),
         onChanged: (value) {
-          model.adress.floor = int.parse(value);
+          model.floor = int.parse(value);
           model.setFloorValide();
         },
-        placeholder: model.floorValide ? "${model.adress.floor}" : "8",
+        placeholder: model.floor != 0 ? "${model.floor}" : "8",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1336,7 +1330,7 @@ List<person> listPerson = [
       name: "Эдуард",
       surname: "Тицкий",
       patronymic: "",
-      birthday: "2023-11-02T08:01:16.559Z",
+      birthday: DateTime.now().toString(),
       gender: 0),
   person(
       name: "Елена",
@@ -1469,11 +1463,12 @@ List<String> listTime = [
 ];
 
 class ConfirmButton extends StatelessWidget {
-  patienceOrderModel model;
-  ConfirmButton({super.key, required this.model});
+  patienceOrderModel Model;
+  ConfirmButton({super.key,required this.Model});
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<addressBannerModel>();
     return SizedBox(
       width: 335.w,
       height: 56.h,
@@ -1494,7 +1489,10 @@ class ConfirmButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10)))),
         onPressed: () {
           model.saveVal
-              ? model.saveAddress(model.adress)
+              ? (){
+            model.saveAddress(model.address,model.longitude,model.width,model.height,model.flat,model.entrance,model.floor,model.intercom);
+            Model.getAddress();
+          }
               : model.clearAddress();
           Navigator.of(context).pop();
         },
@@ -1624,47 +1622,47 @@ class _itemAnalysesState extends State<itemAnalyses> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 303.w,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: SizedBox(
-              width: 20.w,
-              height: 20.h,
-              child: Material(
-                child: Checkbox(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4)),
-                    activeColor: colorrs.accent,
-                    checkColor: Colors.white,
-                    value: isChecked,
-                    onChanged: (val) {
-                      setState(() {
-                        isChecked = val!;
-                      });
-                    }),
+    return Padding(
+      padding:  EdgeInsets.only(bottom: 10.h),
+      child: SizedBox(
+        width: 303.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+             SizedBox(
+                width: 20.w,
+                height: 20.h,
+                child: Material(
+                  child: Checkbox(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
+                      activeColor: colorrs.accent,
+                      checkColor: Colors.white,
+                      value: isChecked,
+                      onChanged: (val) {
+                        setState(() {
+                          isChecked = val!;
+                        });
+                      }),
+                ),
+
+            ),
+            SizedBox(width: 5.w,),
+            Expanded(
+              child: Text(
+                "${widget.listAnalyse[widget.index].title}",
+                softWrap: true,
+                style: TexxtStyle.subAnalyseText,
               ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              "${widget.listAnalyse[widget.index].title}",
-              softWrap: true,
-              style: TexxtStyle.subAnalyseText,
+             Text(
+                "${widget.listAnalyse[widget.index].price} ₽",
+                style: TexxtStyle.blackSubTitle,
+
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w),
-            child: Text(
-              "${widget.listAnalyse[widget.index].price} ₽",
-              style: TexxtStyle.blackSubTitle,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

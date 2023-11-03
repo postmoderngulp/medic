@@ -43,7 +43,7 @@ class Api {
 
   Future<String> createCardUser(String name, String surname, String patronymic,
       String dob, int gender, String token) async {
-    Map<String, String> body = {
+    Map<String, dynamic> body = {
       "firstName": name,
       "lastName": surname,
       "patronymic": patronymic,
@@ -63,6 +63,9 @@ class Api {
       body: jsonBody,
       encoding: encoding,
     );
+    print(response.statusCode);
+    print(response.body);
+    print(jsonBody);
     return response.body;
   }
 
@@ -137,6 +140,7 @@ class Api {
       'Content-Type': 'application/json',
       'Authorization': token
     };
+    print(date);
     Map<String, dynamic> body = {
       "clientAddress": adress.toMap(),
       "date": date,

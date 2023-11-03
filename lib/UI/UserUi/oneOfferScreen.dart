@@ -90,16 +90,19 @@ class subOneOfferScreen extends StatelessWidget {
             SizedBox(
               height: 168.h,
             ),
-            SizedBox(
-                width: 335.w,
-                height: 64.h,
-                child: CupertinoButton.filled(
-                  onPressed: () => model.goToPatienceOrder(context),
-                  child: Text(
-                    "Перейти к оформлению заказа",
-                    style: TexxtStyle.buttonStyleW,
-                  ),
-                )),
+            Padding(
+              padding:  EdgeInsets.only(bottom: 24.h),
+              child: SizedBox(
+                  width: 335.w,
+                  height: 64.h,
+                  child: CupertinoButton.filled(
+                    onPressed: () => model.goToPatienceOrder(context),
+                    child: Text(
+                      "Перейти к оформлению заказа",
+                      style: TexxtStyle.buttonStyleW,
+                    ),
+                  )),
+            ),
           ],
         ),
       ),

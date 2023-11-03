@@ -81,6 +81,8 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
   void setAdresValide() {
     adress.address.isNotEmpty ? addressValide = true : addressValide = false;
     notifyListeners();
@@ -151,17 +153,9 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveAddress(clientAddress adress) async {
-    final box = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
-    if (box.get('key') != null) {
-      await box.clear();
-    }
-    await box.put('key', adress);
-  }
-
-  void clearAddress() async {
-    final box = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
-    await box.clear();
+  void getAddress() async{
+    _setup();
+    notifyListeners();
   }
 
   void createOffer(BuildContext context, clientAddress adress, String dob,

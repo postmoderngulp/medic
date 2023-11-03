@@ -202,7 +202,7 @@ class _subCreateCardWidgetState extends State<subCreateCardWidget> {
             width: 335.w,
             height: 48.h,
             child: CupertinoTextField(
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               onEditingComplete: () => FocusScope.of(context).nextFocus(),
               onChanged: (value) {
                 model.dob = value;
