@@ -50,10 +50,7 @@ class patienceOrderModel extends ChangeNotifier {
     _setup();
   }
 
-  void setIndex(int Index) {
-    index = Index;
-    notifyListeners();
-  }
+
 
   void _setup() async {
     if (!Hive.isAdapterRegistered(2)) {
@@ -123,16 +120,6 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDayValide() {
-    dob.day != 0 ? dayValide = true : dayValide = false;
-    notifyListeners();
-  }
-
-  void setTimeValide() {
-    dob.hour != 0 ? timeValide = true : timeValide = false;
-    notifyListeners();
-  }
-
   void setPersonValide() {
     personList.isNotEmpty ? personValide = true : personValide = false;
     notifyListeners();
@@ -153,8 +140,11 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getAddress() async{
-    _setup();
+  Future<void> getAddress() async{
+    final boxAddress = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
+    if (boxAddress.get('key') != null) {
+      adress = boxAddress.get('key')!;
+    }
     notifyListeners();
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import 'package:medic/Navigation/NavigatorClass.dart';
 import 'package:medic/Domain/Hive/hive.dart';
 
 import '../entity/clientAddress.dart';
@@ -95,7 +94,7 @@ class addressBannerModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveAddress(String Address,int longitude,int width,int height,int flat,int entrance,int floor,String intercom) async {
+  Future<void> saveAddress(String Address,int longitude,int width,int height,int flat,int entrance,int floor,String intercom) async {
     final box = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
     if (box.get('key') != null) {
       await box.clear();
@@ -104,7 +103,7 @@ class addressBannerModel extends ChangeNotifier {
     await box.put('key', address);
   }
 
-  void clearAddress() async {
+  Future<void> clearAddress() async {
     final box = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
     await box.clear();
   }

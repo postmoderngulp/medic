@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/Domain/entity/analyse.dart';
+import 'package:medic/Domain/models/date_time_banner.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import '../../Domain/entity/person.dart';
@@ -273,14 +274,7 @@ class ChooseAdressInputField extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14.w),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: model.addressValide &&
-                      model.entranceValide &&
-                      model.flatValide &&
-                      model.floorValide &&
-                      model.heightValide &&
-                      model.intercomValide &&
-                      model.longitudeValide &&
-                      model.widthValide
+              child: model.adress.address.isNotEmpty
                   ? Text(
                       "${model.adress.address}, кв ${model.adress.longitude}",
                       style: TexxtStyle.placeHolderBlackSTyle,
@@ -297,27 +291,10 @@ class ChooseAdressInputField extends StatelessWidget {
   }
 }
 
-class ChooseDateAndTimeInputField extends StatefulWidget {
+class ChooseDateAndTimeInputField extends StatelessWidget {
   ChooseDateAndTimeInputField({super.key});
-
-  @override
-  State<ChooseDateAndTimeInputField> createState() =>
-      _ChooseDateAndTimeInputFieldState();
-}
-
-class _ChooseDateAndTimeInputFieldState
-    extends State<ChooseDateAndTimeInputField> {
-  DateTime dateTime = DateTime.now();
-
-  int val = -1;
-
   @override
   Widget build(BuildContext context) {
-    var nextDay = dateTime.day + 1;
-    List<String> dateList = [
-      'Сегодня, ${dateTime.day} cентября',
-      'Завтра, ${nextDay} cентября'
-    ];
     final model = context.watch<patienceOrderModel>();
     return SizedBox(
       width: 335.w,
@@ -330,188 +307,8 @@ class _ChooseDateAndTimeInputFieldState
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) {
-            return Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24))),
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Дата и время",
-                          style: TexxtStyle.title2Text,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      "Выберите дату",
-                      style: TexxtStyle.subSubTitle,
-                    ),
-                    Center(
-                        child: SizedBox(
-                      width: 335.w,
-                      height: 56.h,
-                      child: Material(
-                        child: ValueListenableBuilder(
-                            valueListenable: model.dropValue,
-                            builder: (BuildContext context, String value, _) {
-                              return DropdownButtonFormField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 10.0.w, vertical: 15.0.h),
-                                  fillColor: colorrs.greyy,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent, width: 0)),
-                                ),
-                                isExpanded: true,
-                                hint: Text(
-                                  'Сегодня, ${dateTime.day} cентября',
-                                  style: TexxtStyle.blackSubTitle,
-                                ),
-                                icon: const ImageIcon(
-                                    AssetImage("assets/dropDownIcon.png")),
-                                value: (value.isEmpty) ? null : value,
-                                onChanged: (choice) {
-                                  setState(() {
-                                    model.dropValue.value = choice.toString();
-                                    choice.toString() ==
-                                            'Сегодня, ${dateTime.day} cентября'
-                                        ? model.dob = DateTime(model.dob.year,
-                                            model.dob.month, dateTime.day)
-                                        : model.dob = DateTime(model.dob.year,
-                                            model.dob.month, nextDay);
-                                    model.setDayValide();
-                                    print(model.dob);
-                                  });
-                                },
-                                items: dateList
-                                    .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(e),
-                                        ))
-                                    .toList(),
-                              );
-                            }),
-                      ),
-                    )),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 5.h),
-                      child: Text(
-                        "Выберите время",
-                        style: TexxtStyle.subSubTitle,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40.h,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: listTime.length,
-                          itemBuilder: (context, index) => Padding(
-                                padding: EdgeInsets.only(left: 16.w),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      model.setIndex(index);
-                                      model.dob = DateTime(
-                                          model.dob.year,
-                                          model.dob.month,
-                                          model.dob.day,
-                                          int.parse(
-                                              listTime[index].substring(0, 2)));
-                                      model.setTimeValide();
-                                      print(model.dob);
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 70.w,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                        color: model.index == index
-                                            ? colorrs.accent
-                                            : colorrs.greyy,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Center(
-                                      child: Text(
-                                        listTime[index],
-                                        style: model.index == index
-                                            ? TexxtStyle.bankTxtStyleWhite
-                                            : TexxtStyle.bankTxtStyle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 24.h, top: 20.h),
-                        child: SizedBox(
-                          width: 335.w,
-                          height: 56.h,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
-                                    model.dayValide && model.timeValide
-                                        ? colorrs.accent
-                                        : colorrs.inactiveAccent),
-                                elevation: const MaterialStatePropertyAll(0),
-                                shape: MaterialStatePropertyAll(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                10)))),
-                            onPressed: () => model.dayValide && model.timeValide
-                                ? Navigator.of(context).pop
-                                : null,
-                            child: Text(
-                              "Подтвердить",
-                              style: TexxtStyle.buttonStyleWhite,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+            return ChangeNotifierProvider(create: (context) => dateTimeBannerModel(),
+            child: dateTimeBanner(),
             );
           },
         ),
@@ -540,6 +337,234 @@ class _ChooseDateAndTimeInputFieldState
     );
   }
 }
+
+class dateTimeBanner extends StatelessWidget {
+   dateTimeBanner({super.key});
+  int val = -1;
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<dateTimeBannerModel>();
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24))),
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Дата и время",
+                  style: TexxtStyle.title2Text,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              "Выберите дату",
+              style: TexxtStyle.subSubTitle,
+            ),
+          const dropFieldDate(),
+            SizedBox(
+              height: 10.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 5.h),
+              child: Text(
+                "Выберите время",
+                style: TexxtStyle.subSubTitle,
+              ),
+            ),
+            const listViewTime(),
+            const confirmDateButton(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class confirmDateButton extends StatelessWidget {
+  const confirmDateButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<dateTimeBannerModel>();
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 24.h, top: 20.h),
+        child: SizedBox(
+          width: 335.w,
+          height: 56.h,
+          child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(
+                    model.dayValide && model.timeValide
+                        ? colorrs.accent
+                        : colorrs.inactiveAccent),
+                elevation: const MaterialStatePropertyAll(0),
+                shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadiusDirectional.circular(
+                            10)))),
+            onPressed: () => model.dayValide && model.timeValide
+                ?
+              Navigator.of(context).pop()
+            : null,
+            child: Text(
+              "Подтвердить",
+              style: TexxtStyle.buttonStyleWhite,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class listViewTime extends StatelessWidget {
+  const listViewTime({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<dateTimeBannerModel>();
+    return  SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 40.h,
+      child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: listTime.length,
+          itemBuilder: (context, index) => Padding(
+            padding: EdgeInsets.only(left: 16.w),
+            child: GestureDetector(
+              onTap: () {
+                model.setIndex(index);
+                model.dob = DateTime(
+                    model.dob.year,
+                    model.dob.month,
+                    model.dob.day,
+                    int.parse(
+                        listTime[index].substring(0, 2)));
+                model.setTimeValide();
+                print(model.dob);
+
+              },
+              child: Container(
+                width: 70.w,
+                height: 40.h,
+                decoration: BoxDecoration(
+                    color: model.index == index
+                        ? colorrs.accent
+                        : colorrs.greyy,
+                    borderRadius:
+                    BorderRadius.circular(10)),
+                child: Center(
+                  child: Text(
+                    listTime[index],
+                    style: model.index == index
+                        ? TexxtStyle.bankTxtStyleWhite
+                        : TexxtStyle.bankTxtStyle,
+                  ),
+                ),
+              ),
+            ),
+          )),
+    );
+  }
+}
+
+
+class dropFieldDate extends StatelessWidget {
+  const dropFieldDate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.now();
+    var nextDay = dateTime.day + 1;
+    List<String> dateList = [
+      'Сегодня, ${dateTime.day} cентября',
+      'Завтра, ${nextDay} cентября'
+    ];
+    final model = context.watch<dateTimeBannerModel>();
+    return  Center(
+        child: SizedBox(
+          width: 335.w,
+          height: 56.h,
+          child: Material(
+            child: ValueListenableBuilder(
+                valueListenable: model.dropValue,
+                builder: (BuildContext context, String value, _) {
+                  return DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 10.0.w, vertical: 15.0.h),
+                      fillColor: colorrs.greyy,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 0)),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 0)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 0)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Colors.transparent, width: 0)),
+                    ),
+                    isExpanded: true,
+                    hint: Text(
+                      'Сегодня, ${dateTime.day} cентября',
+                      style: TexxtStyle.blackSubTitle,
+                    ),
+                    icon: const ImageIcon(
+                        AssetImage("assets/dropDownIcon.png")),
+                    value: (value.isEmpty) ? null : value,
+                    onChanged: (choice) {
+                      model.dropValue.value = choice.toString();
+                      choice.toString() ==
+                          'Сегодня, ${dateTime.day} cентября'
+                          ? model.dob = DateTime(model.dob.year,
+                          model.dob.month, dateTime.day)
+                          : model.dob = DateTime(model.dob.year,
+                          model.dob.month, nextDay);
+                      model.setDayValide();
+                    },
+                    items: dateList
+                        .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ))
+                        .toList(),
+                  );
+                }),
+          ),
+        ));
+  }
+}
+
 
 class listPatient extends StatelessWidget {
   patienceOrderModel model;
@@ -848,10 +873,7 @@ class adressBanner extends StatefulWidget {
 }
 
 class _adressBannerState extends State<adressBanner> {
-  void setup() {
-
-  }
-
+  
   @override
   void dispose() {
 
@@ -1377,16 +1399,7 @@ class _PatientsBannerState extends State<PatientsBanner> {
                   "Выбор пациента",
                   style: TexxtStyle.title2Text,
                 ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    maximumSize: const Size(55, 55),
-                    minimumSize: const Size(32, 32),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  child: Image.asset("assets/cancelButton.png"),
-                )
+
               ],
             ),
           ),
@@ -1487,14 +1500,13 @@ class ConfirmButton extends StatelessWidget {
             elevation: const MaterialStatePropertyAll(0),
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)))),
-        onPressed: () {
+        onPressed: ()  async{
           model.saveVal
-              ? (){
-            model.saveAddress(model.address,model.longitude,model.width,model.height,model.flat,model.entrance,model.floor,model.intercom);
-            Model.getAddress();
-          }
-              : model.clearAddress();
+              ?
+          await model.saveAddress(model.address,model.longitude,model.width,model.height,model.flat,model.entrance,model.floor,model.intercom)
+              : await model.clearAddress();
           Navigator.of(context).pop();
+       await  Model.getAddress();
         },
         child: Text(
           "Подтвердить",
