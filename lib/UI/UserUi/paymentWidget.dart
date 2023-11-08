@@ -27,8 +27,11 @@ class _paymentWidgetState extends State<paymentWidget> {
       _timerThree.cancel();
     });
     _timerTwo = Timer(const Duration(seconds: 5), () {
-      _timer.cancel();
-      _timerTwo.cancel();
+      setState(() {
+        _timer.cancel();
+        _timerTwo.cancel();
+      });
+
     });
   }
 

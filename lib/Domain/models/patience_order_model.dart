@@ -29,7 +29,6 @@ class patienceOrderModel extends ChangeNotifier {
   bool personValide = false;
   bool phoneValide = false;
   bool priceValide = true;
-  bool commentValide = false;
 
   clientAddress adress = clientAddress(
       address: '',
@@ -90,6 +89,18 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setDayValide() {
+    dob.day != 0 ? dayValide = true : dayValide = false;
+    notifyListeners();
+  }
+
+  void setTimeValide() {
+    dob.hour != 0 ? timeValide = true : timeValide = false;
+    notifyListeners();
+  }
+
+
+
   void setWidthValide() {
     adress.width != 0 ? widthValide = true : widthValide = false;
     notifyListeners();
@@ -135,15 +146,30 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCommentValide() {
-    comment.isNotEmpty ? commentValide = true : commentValide = false;
-    notifyListeners();
-  }
+
 
   Future<void> getAddress() async{
     final boxAddress = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
     if (boxAddress.get('key') != null) {
       adress = boxAddress.get('key')!;
+      setAdresValide();
+      setEntranceValide();
+      setFlatValide();
+      setFloorValide();
+      setHeightValide();
+      setIntercomValide();
+      setLongitudeValide();
+      setWidthValide();
+    }
+    notifyListeners();
+  }
+
+  Future<void> getDate() async{
+    final boxDate = await Hive.openBox<DateTime>(namesBox.dateDataBox);
+    if (boxDate.get('dateVal') != null) {
+      dob = boxDate.get('dateVal')!;
+      setTimeValide();
+      setDayValide();
     }
     notifyListeners();
   }

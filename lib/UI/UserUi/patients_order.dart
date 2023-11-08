@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/Domain/entity/analyse.dart';
-import 'package:medic/Domain/models/date_time_banner.dart';
+import 'package:medic/Domain/models/date_time_banner_model.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import '../../Domain/entity/person.dart';
@@ -162,7 +162,6 @@ class subPatienceOrder extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
                           model.addressValide &&
-                                  model.commentValide &&
                                   model.dayValide &&
                                   model.personValide &&
                                   model.phoneValide &&
@@ -181,7 +180,6 @@ class subPatienceOrder extends StatelessWidget {
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)))),
                   onPressed: () => model.addressValide &&
-                          model.commentValide &&
                           model.dayValide &&
                           model.personValide &&
                           model.phoneValide &&
@@ -308,7 +306,7 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return ChangeNotifierProvider(create: (context) => dateTimeBannerModel(),
-            child: dateTimeBanner(),
+            child: dateTimeBanner(Model: model,),
             );
           },
         ),
@@ -323,7 +321,7 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: model.dayValide && model.timeValide
                   ? Text(
-                      "${model.dropValue.value} ${listTime[model.index]}",
+                      "${model.dob.day}, ${model.dob.hour} часов",
                       style: TexxtStyle.placeHolderBlackSTyle,
                     )
                   : Text(
@@ -339,7 +337,8 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
 }
 
 class dateTimeBanner extends StatelessWidget {
-   dateTimeBanner({super.key});
+  patienceOrderModel Model;
+   dateTimeBanner({super.key,required this.Model});
   int val = -1;
   @override
   Widget build(BuildContext context) {
@@ -390,7 +389,7 @@ class dateTimeBanner extends StatelessWidget {
               ),
             ),
             const listViewTime(),
-            const confirmDateButton(),
+             confirmDateButton(Model: Model,),
           ],
         ),
       ),
@@ -399,7 +398,8 @@ class dateTimeBanner extends StatelessWidget {
 }
 
 class confirmDateButton extends StatelessWidget {
-  const confirmDateButton({super.key});
+  patienceOrderModel Model;
+   confirmDateButton({super.key,required this.Model});
 
   @override
   Widget build(BuildContext context) {
@@ -422,10 +422,13 @@ class confirmDateButton extends StatelessWidget {
                         borderRadius:
                         BorderRadiusDirectional.circular(
                             10)))),
-            onPressed: () => model.dayValide && model.timeValide
-                ?
-              Navigator.of(context).pop()
-            : null,
+            onPressed: () async {
+             if(model.dayValide && model.timeValide) {
+               await model.saveDate(model.dob);
+               await Model.getDate();
+             }
+             Navigator.of(context).pop();
+            },
             child: Text(
               "Подтвердить",
               style: TexxtStyle.buttonStyleWhite,
@@ -848,7 +851,6 @@ class stayWishField extends StatelessWidget {
       child: CupertinoTextField(
         onChanged: (value) {
           model.comment = value;
-          model.setCommentValide();
         },
         padding: EdgeInsets.only(left: 14.w, top: 14.h),
         placeholder: "Можете оставить свои пожелания",

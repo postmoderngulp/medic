@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:medic/Domain/Hive/hive.dart';
-
 import '../entity/clientAddress.dart';
 
 class addressBannerModel extends ChangeNotifier {

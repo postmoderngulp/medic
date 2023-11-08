@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
+import 'package:medic/Domain/Hive/hive.dart';
 
 class dateTimeBannerModel extends ChangeNotifier {
   DateTime dob = DateTime.now();
@@ -22,4 +24,11 @@ class dateTimeBannerModel extends ChangeNotifier {
     index = Index;
     notifyListeners();
   }
+
+  Future<void> saveDate(DateTime value) async{
+    final box = await Hive.openBox<DateTime>(namesBox.dateDataBox);
+    await box.put('dateVal', value);
+    notifyListeners();
+  }
+
 }
