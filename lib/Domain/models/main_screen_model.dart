@@ -29,11 +29,17 @@ class mainScreenModel extends ChangeNotifier {
         days: "2",
         price: 1800),
   ];
-
   List<analyse> basketList = [];
+  List<String> catalog = ['Популярные', 'Covid', 'Комплексные'];
+  int Index = 0;
 
   mainScreenModel() {
     _setup();
+  }
+
+  void setVal(int index) {
+    Index = index;
+    notifyListeners();
   }
 
   void _setup() async {

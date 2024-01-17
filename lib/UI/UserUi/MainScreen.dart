@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:provider/provider.dart';
-import '../../Domain/models/choose_tests_model.dart';
 import '../../Domain/models/main_screen_model.dart';
 import '../../Domain/models/basket_model.dart';
 
@@ -15,15 +15,12 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CupertinoPageScaffold(
-        backgroundColor: Colors.white,
-        child: Material(
+          backgroundColor: Colors.white,
+          child: Material(
             child: ChangeNotifierProvider(
-          create: (context) => ChooseTestModel(),
-          child: ChangeNotifierProvider(
-              create: (BuildContext context) => mainScreenModel(),
-              child: const SubWidget()),
-        )),
-      ),
+                create: (BuildContext context) => mainScreenModel(),
+                child: const SubWidget()),
+          )),
     );
   }
 }
@@ -41,13 +38,10 @@ class SubWidget extends StatelessWidget {
         SizedBox(
           height: 24.h,
         ),
-        Center(
-          child:
-              SizedBox(width: 335.w, height: 48.h, child: const FindAnalyzes()),
-        ),
+        const FindAnalyzes(),
         Expanded(
-            child: SingleChildScrollView(
-          child: Column(
+          child: SingleChildScrollView(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,10 +58,7 @@ class SubWidget extends StatelessWidget {
               SizedBox(
                 height: 16.h,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: SizedBox(height: 152.h, child: const ListOfBanners()),
-              ),
+              SizedBox(height: 152.h, child: const ListOfBanners()),
               SizedBox(
                 height: 32.h,
               ),
@@ -81,14 +72,14 @@ class SubWidget extends StatelessWidget {
               SizedBox(
                 height: 16.h,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: const ButtonsWidget(),
+              SizedBox(height: 48.h, child: const Buttons()),
+              SizedBox(
+                height: 24.h,
               ),
               const ListProducts(),
             ],
-          ),
-        )),
+          )),
+        ),
         model.basketList.isNotEmpty
             ? Provider(
                 create: (BuildContext context) => subBasketModel(),
@@ -104,16 +95,27 @@ class FindAnalyzes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTextField(
-      prefix: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: Image.asset("assets/search.png"),
-      ),
-      placeholder: "Искать анализы",
-      placeholderStyle: TexxtStyle.placeHolderSTyle,
-      decoration: const BoxDecoration(
-        color: colorrs.greyy,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: SizedBox(
+        width: 335.w,
+        height: 48.h,
+        child: CupertinoTextField(
+          prefix: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: SvgPicture.asset(
+              "assets/search.svg",
+              width: 20.w,
+              height: 20.h,
+            ),
+          ),
+          placeholder: "Искать анализы",
+          placeholderStyle: TexxtStyle.placeHolderSTyle,
+          decoration: const BoxDecoration(
+            color: colorrs.greyy,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
       ),
     );
   }
@@ -127,101 +129,70 @@ class ListOfBanners extends StatelessWidget {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 10,
-        itemBuilder: (context, index) => const BannerItem());
+        itemBuilder: (context, index) => BannerItem(
+              index: index,
+              length: 10,
+            ));
   }
 }
 
 class BannerItem extends StatelessWidget {
-  const BannerItem({super.key});
+  int length;
+  int index;
+  BannerItem({super.key, required this.index, required this.length});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20),
+      padding: index == length - 1
+          ? EdgeInsets.only(left: 16.w, right: 20.w)
+          : EdgeInsets.only(left: 16.w),
       child: Image.asset('assets/Banner.png'),
     );
   }
 }
 
-class ButtonsWidget extends StatelessWidget {
-  const ButtonsWidget({super.key});
+class Buttons extends StatelessWidget {
+  const Buttons({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<ChooseTestModel>();
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(children: [
-        SizedBox(
-          width: 16.w,
-        ),
-        SizedBox(
-          width: 126.w,
-          height: 48.h,
-          child: ElevatedButton(
-            style: ButtonStyle(
-                elevation: const MaterialStatePropertyAll(0),
-                backgroundColor: MaterialStatePropertyAll(
-                    model.index == 0 ? colorrs.accent : colorrs.greyy),
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)))),
-            onPressed: () => model.setOne(),
-            child: Text(
-              'Популярные',
-              style: model.index == 0
-                  ? TexxtStyle.chipSelectText
-                  : TexxtStyle.chipUnSelectText,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 16.w,
-        ),
-        SizedBox(
-          width: 78.w,
-          height: 48.h,
-          child: ElevatedButton(
-            style: ButtonStyle(
-                elevation: const MaterialStatePropertyAll(0),
-                backgroundColor: MaterialStatePropertyAll(
-                    model.index == 1 ? colorrs.accent : colorrs.greyy),
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)))),
-            onPressed: () => model.setTwo(),
-            child: Text(
-              'Covid',
-              style: model.index == 1
-                  ? TexxtStyle.chipSelectText
-                  : TexxtStyle.chipUnSelectText,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 16.w,
-        ),
-        SizedBox(
-          width: 135.w,
-          height: 48.h,
-          child: ElevatedButton(
-            style: ButtonStyle(
-                elevation: const MaterialStatePropertyAll(0),
-                backgroundColor: MaterialStatePropertyAll(
-                    model.index == 2 ? colorrs.accent : colorrs.greyy),
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)))),
-            onPressed: () => model.setThree(),
-            child: Text(
-              'Комплексные',
-              style: model.index == 2
-                  ? TexxtStyle.chipSelectText
-                  : TexxtStyle.chipUnSelectText,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 16.w,
-        ),
-      ]),
+    final model = context.watch<mainScreenModel>();
+    return ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: model.catalog.length,
+        itemBuilder: (BuildContext context, int index) => Padding(
+              padding: index == model.catalog.length - 1
+                  ? EdgeInsets.only(left: 16.w, right: 20.w)
+                  : EdgeInsets.only(left: 16.w),
+              child: ItemCatalog(index: index),
+            ));
+  }
+}
+
+class ItemCatalog extends StatelessWidget {
+  int index;
+  ItemCatalog({super.key, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<mainScreenModel>();
+    return ElevatedButton(
+      style: ButtonStyle(
+          elevation: const MaterialStatePropertyAll(0),
+          backgroundColor: MaterialStatePropertyAll(
+              model.Index == index ? colorrs.accent : colorrs.greyy),
+          shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
+      onPressed: () => model.setVal(index),
+      child: Text(
+        model.catalog[index],
+        style: model.Index == index
+            ? TexxtStyle.chipSelectText
+            : TexxtStyle.chipUnSelectText,
+      ),
     );
   }
 }
@@ -239,7 +210,11 @@ class ListProducts extends StatelessWidget {
         shrinkWrap: true,
         itemCount: model.listAnalyse.length,
         itemBuilder: (context, index) => Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+          padding: index == 0
+              ? EdgeInsets.symmetric(horizontal: 20.w)
+              : index == model.listAnalyse.length - 1
+                  ? EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w)
+                  : EdgeInsets.only(top: 16.h, right: 20.w, left: 20.w),
           child: SizedBox(
             width: 335.w,
             height: 136.h,
@@ -262,7 +237,7 @@ class ElementProducts extends StatelessWidget {
     final modelTwo = context.watch<mainScreenModel>();
     return GestureDetector(
       onTap: () => showModalBottomSheet<dynamic>(
-        elevation: 2.0,
+        elevation: 7.0,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(24), topRight: Radius.circular(24))),
@@ -345,7 +320,6 @@ class ElementProducts extends StatelessWidget {
                           child: modelTwo.basketList
                                   .contains(modelTwo.listAnalyse[index])
                               ? SizedBox(
-                                  width: 96.w,
                                   height: 40.h,
                                   child: ElevatedButton(
                                       style: ButtonStyle(
@@ -369,7 +343,6 @@ class ElementProducts extends StatelessWidget {
                                       onPressed: () =>
                                           modelTwo.removeAnalyse(index)))
                               : SizedBox(
-                                  width: 96.w,
                                   height: 40.h,
                                   child: ElevatedButton(
                                       style: ButtonStyle(
@@ -428,9 +401,10 @@ class basketWidget extends StatelessWidget {
                 backgroundColor:
                     const MaterialStatePropertyAll(colorrs.accent)),
             onPressed: () => model.goToBasket(context),
-            icon: const ImageIcon(
-              AssetImage("assets/basket.png"),
-              color: Color.fromARGB(255, 255, 255, 255),
+            icon: SvgPicture.asset(
+              'assets/basket.svg',
+              width: 20.w,
+              height: 20.h,
             ),
             label: Text("В корзину                  $price ₽",
                 style: TexxtStyle.buttonStyleWhite),
@@ -463,6 +437,7 @@ class bannerWidget extends StatelessWidget {
           children: [
             SizedBox(height: 24.h),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
@@ -471,16 +446,12 @@ class bannerWidget extends StatelessWidget {
                     softWrap: true,
                   ),
                 ),
-                SizedBox(
-                  width: 55.w,
-                  height: 55.h,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: Colors.transparent,
-                    ),
-                    child: Image.asset("assets/cancelButton.png"),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: SvgPicture.asset(
+                    "assets/cancel.svg",
+                    width: 24.w,
+                    height: 24.h,
                   ),
                 ),
               ],
@@ -501,6 +472,7 @@ class bannerWidget extends StatelessWidget {
               "Подготовка",
               style: TexxtStyle.headlineText,
             ),
+            SizedBox(height: 8.h),
             Text(
               "${model.listAnalyse[index].preparation}",
               style: TexxtStyle.subTitle,
@@ -510,7 +482,6 @@ class bannerWidget extends StatelessWidget {
               height: 57.h,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -526,6 +497,7 @@ class bannerWidget extends StatelessWidget {
                     ),
                   ],
                 ),
+                const Spacer(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

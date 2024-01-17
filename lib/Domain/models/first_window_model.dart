@@ -14,7 +14,6 @@ class firstWindowModel {
     final api = Api();
     await api.sendEmail(email);
     goToEmailCodeWidget(context, email);
-
   }
 
   void goToEmailCodeWidget(BuildContext context, String email) {

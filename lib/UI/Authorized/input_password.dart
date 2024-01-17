@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:provider/provider.dart';
@@ -29,46 +30,52 @@ class PasswordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<passwordModel>();
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: 40.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: TextButton(
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(
-                  Colors.transparent,
-                )),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                height: 40.h,
+              ),
+              TextButton(
+                  style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                    Colors.transparent,
+                  )),
+                  child: Text(
+                    "Пропустить",
+                    style: TexxtStyle.sfRegMain,
+                  ),
+                  onPressed: () => model.goToCreateCard(context)),
+              SizedBox(
+                height: 40.h,
+              ),
+              Center(
                 child: Text(
-                  "Пропустить",
-                  style: TexxtStyle.followingTxtStyle,
+                  "Создайте пароль",
+                  style: TexxtStyle.title,
                 ),
-                onPressed: () => model.goToCreateCard(context)),
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-          Center(
-            child: Text(
-              "Создайте пароль",
-              style: TexxtStyle.title,
-            ),
-          ),
-          SizedBox(
-            height: 16.h,
-          ),
-          Center(
-            child: Text(
-              "Для защиты ваших персональных данных",
-              style: TexxtStyle.subSubTitle,
-            ),
-          ),
-          const inputFieldPassword()
-        ]);
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              Center(
+                child: Text(
+                  "Для защиты ваших персональных данных",
+                  style: TexxtStyle.subSubTitle,
+                ),
+              ),
+              SizedBox(
+                height: 56.h,
+              ),
+              const inputFieldPassword()
+            ]),
+      ),
+    );
   }
 }
 
@@ -87,12 +94,19 @@ class _inputFieldPasswordState extends State<inputFieldPassword> {
   var currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    dispose() {
+      inputText = "";
+      for (var i = 0; i < actives.length; i++) {
+        actives[i] = false;
+        currentIndex = 0;
+      }
+      super.dispose();
+    }
+
+    final model = context.read<passwordModel>();
     return Center(
       child: Column(
         children: [
-          SizedBox(
-            height: 56.h,
-          ),
           SizedBox(
               width: 130.w,
               height: 16.h,
@@ -112,8 +126,11 @@ class _inputFieldPasswordState extends State<inputFieldPassword> {
                 ),
               )),
           SizedBox(
+            height: 60.h,
+          ),
+          SizedBox(
             width: 288.w,
-            height: 392.h,
+            height: 450.h,
             child: Column(
               children: [
                 Expanded(
@@ -123,10 +140,9 @@ class _inputFieldPasswordState extends State<inputFieldPassword> {
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
+                            crossAxisCount: 3, childAspectRatio: 1),
                     itemBuilder: (context, index) => Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: 24.w, vertical: 24.h),
+                      margin: const EdgeInsets.all(10),
                       width: 80.w,
                       height: 80.h,
                       decoration: BoxDecoration(
@@ -162,13 +178,23 @@ class _inputFieldPasswordState extends State<inputFieldPassword> {
                                 inputText +=
                                     number[index == 10 ? index - 1 : index]
                                         .toString();
+                                model.password +=
+                                    number[index == 10 ? index - 1 : index]
+                                        .toString();
+                                if (model.password.length == 4) {
+                                  model.SavePassword(model.password, context);
+                                }
                               }
                             });
                           },
                           child: index == 9
                               ? const SizedBox()
                               : index == 11
-                                  ? Image.asset("assets/clearIcon.png")
+                                  ? SvgPicture.asset(
+                                      "assets/clear.svg",
+                                      width: 35.w,
+                                      height: 24.h,
+                                    )
                                   : Text(
                                       "${number[index == 10 ? index - 1 : index]}",
                                       style: TexxtStyle.buttonPaswordText,

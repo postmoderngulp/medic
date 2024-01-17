@@ -3,12 +3,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medic/Domain/entity/analyse.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medic/style/colorrs.dart';
 import 'package:medic/style/texxt_style.dart';
 import 'package:provider/provider.dart';
 import '../../Domain/models/one_offer_screen_model.dart';
-import '../../Navigation/NavigatorClass.dart';
 
 class oneOfferScreen extends StatelessWidget {
   const oneOfferScreen({super.key});
@@ -35,6 +34,7 @@ class subOneOfferScreen extends StatelessWidget {
       price += model.listBasket[i].price;
     }
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
@@ -42,29 +42,28 @@ class subOneOfferScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 52.h,
+              height: 16.h,
             ),
-            const SizedBox(width: 32, height: 32, child: BackButton()),
+            BackButton(),
             SizedBox(
               height: 24.h,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "Корзина",
                   style: TexxtStyle.title,
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: CupertinoButton(
-                        child: const ImageIcon(
-                          AssetImage("assets/deleteBasket.png"),
-                          color: colorrs.someGreyy,
-                        ),
-                        onPressed: () => model.clearBasket(context)),
-                  ),
-                ),
+                Spacer(),
+                CupertinoButton(
+                    child: SvgPicture.asset(
+                      'assets/delBasket.svg',
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                    onPressed: () => model.clearBasket(context)),
               ],
             ),
             SizedBox(
@@ -75,12 +74,12 @@ class subOneOfferScreen extends StatelessWidget {
               height: 40.h,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Сумма",
                   style: TexxtStyle.title,
                 ),
+                Spacer(),
                 Text(
                   "$price ₽",
                   style: TexxtStyle.title,
@@ -88,20 +87,20 @@ class subOneOfferScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 168.h,
+              height: 155.h,
             ),
-            Padding(
-              padding:  EdgeInsets.only(bottom: 24.h),
-              child: SizedBox(
-                  width: 335.w,
-                  height: 64.h,
-                  child: CupertinoButton.filled(
-                    onPressed: () => model.goToPatienceOrder(context),
-                    child: Text(
-                      "Перейти к оформлению заказа",
-                      style: TexxtStyle.buttonStyleW,
-                    ),
-                  )),
+            SizedBox(
+                width: 335.w,
+                height: 64.h,
+                child: CupertinoButton.filled(
+                  onPressed: () => model.goToPatienceOrder(context),
+                  child: Text(
+                    "Перейти к оформлению заказа",
+                    style: TexxtStyle.buttonStyleW,
+                  ),
+                )),
+            SizedBox(
+              height: 32.h,
             ),
           ],
         ),
@@ -116,14 +115,15 @@ class BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pushNamed(NavigatorPaths.mainScreenCardPath),
+      onTap: () => Navigator.pop(context),
       child: Container(
+        width: 32.w,
+        height: 32.h,
         decoration: BoxDecoration(
             color: colorrs.greyy, borderRadius: BorderRadius.circular(8)),
         child: const ImageIcon(
           AssetImage("assets/back_icon.png"),
-          color: colorrs.iconGreyy,
+          color: colorrs.backGrey,
         ),
       ),
     );
@@ -136,25 +136,20 @@ class ListProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<oneOfferScreenModel>();
-    List<analyse> listSort = [];
-    for (int i = 0; i < model.listBasket.length; i++) {
-      listSort.add(model.listBasket[i]);
-    }
-    var list = listSort.toSet().toList();
     return ListView.builder(
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: list.length,
+      itemCount: model.listSort.length,
       itemBuilder: (context, index) => Padding(
-        padding: EdgeInsets.only(bottom: 16.h),
+        padding: index == model.listSort.length - 1
+            ? EdgeInsets.only(bottom: 0.h)
+            : EdgeInsets.only(bottom: 16.h),
         child: SizedBox(
             width: 335.w,
             height: 138.h,
             child: basketsElementProducts(
               index: index,
-              listSort: list,
-              model: model,
             )),
       ),
     );
@@ -162,20 +157,18 @@ class ListProducts extends StatelessWidget {
 }
 
 class basketsElementProducts extends StatelessWidget {
-  oneOfferScreenModel model;
-  List<analyse> listSort;
   int index;
-  basketsElementProducts(
-      {super.key,
-      required this.listSort,
-      required this.index,
-      required this.model});
+  basketsElementProducts({
+    super.key,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
     int countVal = 0;
+    final model = context.watch<oneOfferScreenModel>();
     for (int i = 0; i < model.listBasket.length; i++) {
-      if (listSort[index] == model.listBasket[i]) {
+      if (model.listSort[index] == model.listBasket[i]) {
         countVal++;
       }
     }
@@ -195,80 +188,90 @@ class basketsElementProducts extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           children: [
+            SizedBox(
+              height: 16.h,
+            ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 16.h,
-                ),
-                Expanded(
+                  width: 275.w,
                   child: Text(
-                    "${listSort[index].title}",
+                    "${model.listSort[index].title}",
                     softWrap: true,
                     style: TexxtStyle.HeadlineMedium,
                   ),
                 ),
-                CupertinoButton(
-                    alignment: Alignment.topRight,
-                    child: ImageIcon(
-                      AssetImage("assets/Delete.png"),
-                      color: colorrs.someGreyy,
-                      size: 20.w,
-                    ),
-                    onPressed: () =>
-                        model.deleteElement(listSort[index], context)),
+                Spacer(),
+                GestureDetector(
+                    onTap: () =>
+                        model.deleteElement(model.listSort[index], context),
+                    child: SvgPicture.asset(
+                      'assets/Delete.svg',
+                      width: 20.w,
+                      height: 20.h,
+                    )),
               ],
             ),
             SizedBox(
-              height: 28.h,
+              height: 34.h,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '${listSort[index].price} ₽',
+                  '${model.listSort[index].price} ₽',
                   style: TexxtStyle.priceElementText,
                 ),
+                Spacer(),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       "$countVal Пациент",
                       style: TexxtStyle.blackSubTitle,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Container(
-                        width: 64.w,
-                        height: 32.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: colorrs.greyy),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    Container(
+                      width: 66.w,
+                      height: 32.h,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: colorrs.greyy),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.w),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
                               onTap: () {
                                 if (countVal != 0) {
-                                  model.minCount(listSort[index], context);
+                                  model.minCount(
+                                      model.listSort[index], context);
                                 }
                               },
-                              child: ImageIcon(
-                                AssetImage("assets/min.png"),
-                                color: colorrs.iconGreyy,
-                                size: 23.w,
+                              child: SvgPicture.asset(
+                                'assets/min.svg',
+                                width: 20.w,
+                                height: 20.h,
                               ),
                             ),
                             ImageIcon(
                               AssetImage("assets/Divider.png"),
                               color: colorrs.iconGreyy,
-                              size: 16.w,
+                              size: 14.w,
                             ),
                             GestureDetector(
                               onTap: () {
-                                model.plusCount(listSort[index]);
+                                model.plusCount(model.listSort[index]);
                               },
-                              child: ImageIcon(
-                                AssetImage("assets/pluss.png"),
-                                color: colorrs.iconGreyy,
-                                size: 23.w,
+                              child: SvgPicture.asset(
+                                'assets/plus.svg',
+                                width: 20.w,
+                                height: 20.h,
                               ),
                             ),
                           ],
@@ -278,6 +281,9 @@ class basketsElementProducts extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+            SizedBox(
+              height: 14.h,
             ),
           ],
         ),

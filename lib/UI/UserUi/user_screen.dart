@@ -32,7 +32,7 @@ class _subUserWidgetState extends State<subUserWidget> {
     final dropValue = ValueNotifier('');
     return SafeArea(
       child: CupertinoPageScaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           backgroundColor: Colors.white,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -65,29 +65,20 @@ class _subUserWidgetState extends State<subUserWidget> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Text(
-                      "Без карты пациента вы не сможете заказать анализы",
-                      style: TexxtStyle.SubsubSubTitle,
-                      softWrap: true,
-                    ),
+                  Text(
+                    "Без карты пациента вы не сможете заказать анализы",
+                    style: TexxtStyle.SubsubSubTitle,
+                    softWrap: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Text(
-                      "В картах пациентов будут храниться результаты",
-                      style: TexxtStyle.SubsubSubTitle,
-                      softWrap: true,
-                    ),
+                  Text(
+                    "В картах пациентов будут храниться результаты",
+                    style: TexxtStyle.SubsubSubTitle,
+                    softWrap: true,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Text(
-                      "анализов вас и ваших близких.",
-                      style: TexxtStyle.SubsubSubTitle,
-                      softWrap: true,
-                    ),
+                  Text(
+                    "анализов вас и ваших близких.",
+                    style: TexxtStyle.SubsubSubTitle,
+                    softWrap: true,
                   ),
                   SizedBox(
                     height: 8.h,
@@ -104,6 +95,7 @@ class _subUserWidgetState extends State<subUserWidget> {
                           model.setNameValide();
                         },
                         placeholder: 'Имя',
+                        padding: const EdgeInsets.all(14),
                         placeholderStyle: TexxtStyle.placeHolderSTyle,
                         decoration: const BoxDecoration(
                           color: colorrs.greyy,
@@ -124,6 +116,7 @@ class _subUserWidgetState extends State<subUserWidget> {
                           model.patronymic = value;
                           model.setPatronymicValide();
                         },
+                        padding: const EdgeInsets.all(14),
                         placeholder: 'Отчество',
                         placeholderStyle: TexxtStyle.placeHolderSTyle,
                         decoration: const BoxDecoration(
@@ -145,6 +138,7 @@ class _subUserWidgetState extends State<subUserWidget> {
                           model.surname = value;
                           model.setSurnameValide();
                         },
+                        padding: const EdgeInsets.all(14),
                         placeholder: 'Фамилия',
                         placeholderStyle: TexxtStyle.placeHolderSTyle,
                         decoration: const BoxDecoration(
@@ -167,6 +161,7 @@ class _subUserWidgetState extends State<subUserWidget> {
                           model.dob = value;
                           model.setDobValide();
                         },
+                        padding: const EdgeInsets.all(14),
                         placeholderStyle: TexxtStyle.placeHolderSTyle,
                         decoration: const BoxDecoration(
                           color: colorrs.greyy,
@@ -207,9 +202,13 @@ class _subUserWidgetState extends State<subUserWidget> {
                                         color: Colors.transparent, width: 0)),
                               ),
                               isExpanded: true,
-                              hint: Text(
-                                'Пол',
-                                style: TexxtStyle.placeHolderSTyle,
+                              hint: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  'Пол',
+                                  style: TexxtStyle.placeHolderSTyle,
+                                ),
                               ),
                               icon: const ImageIcon(
                                   AssetImage("assets/dropDownIcon.png")),

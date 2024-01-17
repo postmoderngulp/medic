@@ -34,71 +34,71 @@ class EmailCodeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<emailCodePasswordModel>();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.w,
-            vertical: 24.h,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 24.h,
           ),
-          child: const SizedBox(width: 32, height: 32, child: BackButton()),
-        ),
-        SizedBox(height: 132.h),
-        Column(
-          children: [
-            Text(
-              "Введите код из E-mail",
-              style: TexxtStyle.buttonStyleBlack,
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                    width: 44.w,
-                    height: 48.h,
-                    child: const inputEmailCodeFirst()),
-                SizedBox(
-                  width: 10.w,
-                ),
-                SizedBox(
-                    width: 48.w,
-                    height: 48.h,
-                    child: const inputEmailCodeSecond()),
-                SizedBox(
-                  width: 10.w,
-                ),
-                SizedBox(
-                    width: 48.w,
-                    height: 48.h,
-                    child: const inputEmailCodeThird()),
-                SizedBox(
-                  width: 10.w,
-                ),
-                SizedBox(
-                    width: 48.w,
-                    height: 48.h,
-                    child: inputEmailCodeFour(
-                      email: email,
-                    )),
-              ],
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            Text(
-              "Отправить код повторно можно",
-              style: TexxtStyle.subSubTitle,
-            ),
-            const timeWidget()
-          ],
-        ),
-      ],
+          const BackButton(),
+          SizedBox(height: 132.h),
+          Column(
+            children: [
+              Text(
+                "Введите код из E-mail",
+                style: TexxtStyle.buttonStyleBlack,
+              ),
+              SizedBox(
+                height: 24.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: 48.w,
+                      height: 48.h,
+                      child: const inputEmailCodeFirst()),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  SizedBox(
+                      width: 48.w,
+                      height: 48.h,
+                      child: const inputEmailCodeSecond()),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  SizedBox(
+                      width: 48.w,
+                      height: 48.h,
+                      child: const inputEmailCodeThird()),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  SizedBox(
+                      width: 48.w,
+                      height: 48.h,
+                      child: inputEmailCodeFour(
+                        email: email,
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              Text(
+                "Отправить код повторно можно",
+                style: TexxtStyle.subSubTitle,
+              ),
+              const timeWidget()
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -153,11 +153,13 @@ class BackButton extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pop(context),
       child: Container(
+        width: 32.w,
+        height: 32.h,
         decoration: BoxDecoration(
             color: colorrs.greyy, borderRadius: BorderRadius.circular(8)),
         child: const ImageIcon(
           AssetImage("assets/back_icon.png"),
-          color: colorrs.iconGreyy,
+          color: colorrs.backGrey,
         ),
       ),
     );
@@ -176,10 +178,7 @@ class inputEmailCodeFirst extends StatelessWidget {
       autofocus: true,
       onChanged: (value) {
         model.recoveryCode += value;
-          FocusScope.of(context).nextFocus();
-
-
-
+        FocusScope.of(context).nextFocus();
       },
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.center,
@@ -246,9 +245,7 @@ class inputEmailCodeFour extends StatelessWidget {
     final model = context.watch<emailCodePasswordModel>();
     return CupertinoTextField(
       keyboardType: TextInputType.number,
-      onEditingComplete: () {
-
-      },
+      onEditingComplete: () {},
       onChanged: (value) {
         model.recoveryCode += value;
         FocusScope.of(context).unfocus();

@@ -6,14 +6,24 @@ import 'package:medic/Domain/Hive/hive.dart';
 
 class oneOfferScreenModel extends ChangeNotifier {
   List<analyse> listBasket = [];
+  List<analyse> listSort = [];
 
   oneOfferScreenModel() {
     _setup();
   }
 
+  void sort(List<analyse> list) {
+    for (int i = 0; i < list.length; i++) {
+      listSort.add(list[i]);
+    }
+    listSort = listSort.toSet().toList();
+    notifyListeners();
+  }
+
   void _setup() async {
     final box = await Hive.openBox<analyse>(namesBox.LIstAnalyseDataBox);
     listBasket = box.values.toList();
+    sort(listBasket);
     notifyListeners();
   }
 

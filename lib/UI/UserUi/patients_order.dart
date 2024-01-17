@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medic/Domain/entity/analyse.dart';
 import 'package:medic/Domain/models/date_time_banner_model.dart';
 import 'package:medic/style/colorrs.dart';
@@ -18,7 +19,7 @@ class patientsOrder extends StatelessWidget {
     return SafeArea(
       child: CupertinoPageScaffold(
         backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         child: ListenableProvider(
             create: (BuildContext context) => patienceOrderModel(),
             child: subPatienceOrder()),
@@ -58,6 +59,9 @@ class subPatienceOrder extends StatelessWidget {
               "Адрес *",
               style: TexxtStyle.subSubTitle,
             ),
+            SizedBox(
+              height: 4.h,
+            ),
             const ChooseAdressInputField(),
             SizedBox(
               height: 16.h,
@@ -65,6 +69,9 @@ class subPatienceOrder extends StatelessWidget {
             Text(
               "Дата и время*",
               style: TexxtStyle.subSubTitle,
+            ),
+            SizedBox(
+              height: 4.h,
             ),
             ChooseDateAndTimeInputField(),
             SizedBox(
@@ -101,113 +108,144 @@ class subPatienceOrder extends StatelessWidget {
               "Телефон *",
               style: TexxtStyle.subSubTitle,
             ),
+            SizedBox(
+              height: 4.h,
+            ),
             const numberPhoneInputField(),
+            SizedBox(
+              height: 16.h,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Комментарий",
                   style: TexxtStyle.subSubTitle,
                 ),
-                CupertinoButton(
-                    child: ImageIcon(
-                      AssetImage("assets/male.png"),
-                      color: Colors.black,
-                      size: 24.w,
-                    ),
-                    onPressed: () {})
+                const Spacer(),
+                GestureDetector(
+                    onTap: () {},
+                    child: SizedBox(
+                        width: 24.w,
+                        height: 20.27.h,
+                        child: Image.asset('assets/mice.png'))),
               ],
             ),
+            SizedBox(
+              height: 4.h,
+            ),
             const stayWishField(),
+            SizedBox(
+              height: 40.h,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Оплата Apple Pay",
                   style: TexxtStyle.textMedium,
                 ),
-                CupertinoButton(
-                  onPressed: () {},
-                  child: ImageIcon(
-                    const AssetImage("assets/rightIcon.png"),
-                    color: colorrs.someGreyy,
-                    size: 20.w,
-                  ),
-                )
+                const Spacer(),
+                GestureDetector(
+                    onTap: () {},
+                    child: SvgPicture.asset(
+                      "assets/arrow_start.svg",
+                      width: 20.w,
+                      height: 20.h,
+                    )),
               ],
             ),
+            SizedBox(
+              height: 16.h,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Промокод",
                   style: TexxtStyle.promoText,
                 ),
-                CupertinoButton(
-                  onPressed: () {},
-                  child: ImageIcon(
-                    const AssetImage("assets/rightIcon.png"),
-                    color: colorrs.someGreyy,
-                    size: 20.w,
-                  ),
-                )
+                const Spacer(),
+                GestureDetector(
+                    onTap: () {},
+                    child: SvgPicture.asset(
+                      "assets/arrow_start.svg",
+                      width: 20.w,
+                      height: 20.h,
+                    )),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 32.h),
-              child: SizedBox(
-                width: 335.w,
-                height: 56.h,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(
-                          model.addressValide &&
-                                  model.dayValide &&
-                                  model.personValide &&
-                                  model.phoneValide &&
-                                  model.priceValide &&
-                                  model.timeValide &&
-                                  model.entranceValide &&
-                                  model.flatValide &&
-                                  model.floorValide &&
-                                  model.heightValide &&
-                                  model.intercomValide &&
-                                  model.longitudeValide &&
-                                  model.widthValide
-                              ? colorrs.accent
-                              : colorrs.inactiveAccent),
-                      elevation: const MaterialStatePropertyAll(0),
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)))),
-                  onPressed: () => model.addressValide &&
-                          model.dayValide &&
-                          model.personValide &&
-                          model.phoneValide &&
-                          model.priceValide &&
-                          model.timeValide &&
-                          model.entranceValide &&
-                          model.flatValide &&
-                          model.floorValide &&
-                          model.heightValide &&
-                          model.intercomValide &&
-                          model.longitudeValide &&
-                          model.widthValide
-                      ? model.createOffer(
-                          context,
-                          model.adress,
-                          model.dob.toString(),
-                          model.personList,
-                          model.phone,
-                          model.price,
-                          model.comment)
-                      : null,
-                  child: Text(
-                    "Заказать",
-                    style: TexxtStyle.buttonStyleWhite,
-                  ),
+            SizedBox(
+              height: 29.h,
+            ),
+            Row(
+              children: [
+                Text(
+                  "${model.countAnalyse} анализ",
+                  style: TexxtStyle.priceElementText,
+                ),
+                const Spacer(),
+                Text(
+                  "${model.sum} ₽",
+                  style: TexxtStyle.priceElementText,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 12.h,
+            ),
+            SizedBox(
+              width: 335.w,
+              height: 56.h,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(
+                        model.addressValide &&
+                                model.dayValide &&
+                                model.personValide &&
+                                model.phoneValide &&
+                                model.priceValide &&
+                                model.timeValide &&
+                                model.entranceValide &&
+                                model.flatValide &&
+                                model.floorValide &&
+                                model.heightValide &&
+                                model.intercomValide &&
+                                model.longitudeValide &&
+                                model.widthValide
+                            ? colorrs.accent
+                            : colorrs.inactiveAccent),
+                    elevation: const MaterialStatePropertyAll(0),
+                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)))),
+                onPressed: () => model.addressValide &&
+                        model.dayValide &&
+                        model.personValide &&
+                        model.phoneValide &&
+                        model.priceValide &&
+                        model.timeValide &&
+                        model.entranceValide &&
+                        model.flatValide &&
+                        model.floorValide &&
+                        model.heightValide &&
+                        model.intercomValide &&
+                        model.longitudeValide &&
+                        model.widthValide
+                    ? model.createOffer(
+                        context,
+                        model.adress,
+                        model.dob.toString(),
+                        model.personList,
+                        model.phone,
+                        model.price,
+                        model.comment)
+                    : model.goToPaymentWidget(context),
+                child: Text(
+                  "Заказать",
+                  style: TexxtStyle.buttonStyleWhite,
                 ),
               ),
-            )
+            ),
+            SizedBox(
+              height: 32.h,
+            ),
           ],
         ),
       ),
@@ -220,18 +258,16 @@ class BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 32,
-      height: 32,
-      child: GestureDetector(
-        onTap: () => Navigator.pop(context),
-        child: Container(
-          decoration: BoxDecoration(
-              color: colorrs.greyy, borderRadius: BorderRadius.circular(8)),
-          child: const ImageIcon(
-            AssetImage("assets/back_icon.png"),
-            color: colorrs.iconGreyy,
-          ),
+    return GestureDetector(
+      onTap: () => Navigator.pop(context),
+      child: Container(
+        width: 32.w,
+        height: 32.h,
+        decoration: BoxDecoration(
+            color: colorrs.greyy, borderRadius: BorderRadius.circular(8)),
+        child: const ImageIcon(
+          AssetImage("assets/back_icon.png"),
+          color: colorrs.backGrey,
         ),
       ),
     );
@@ -249,14 +285,14 @@ class ChooseAdressInputField extends StatelessWidget {
       height: 48.h,
       child: GestureDetector(
         onTap: () => showModalBottomSheet<dynamic>(
+          isScrollControlled: true,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24), topRight: Radius.circular(24))),
-          isScrollControlled: true,
           context: context,
           builder: (BuildContext context) {
             return ChangeNotifierProvider(
-              create: (context)=> addressBannerModel(),
+              create: (context) => addressBannerModel(),
               child: adressBanner(
                 Model: model,
               ),
@@ -293,6 +329,45 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
   ChooseDateAndTimeInputField({super.key});
   @override
   Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.now();
+    String month = '';
+    switch (dateTime.month) {
+      case 1:
+        month = 'Января';
+        break;
+      case 2:
+        month = 'Февраля';
+        break;
+      case 3:
+        month = 'Марта';
+        break;
+      case 4:
+        month = 'Апреля';
+        break;
+      case 5:
+        month = 'Мая';
+        break;
+      case 6:
+        month = 'Июня';
+        break;
+      case 7:
+        month = 'Июля';
+        break;
+      case 8:
+        month = 'Августа';
+        break;
+      case 9:
+        month = 'Сентября';
+        break;
+      case 10:
+        month = 'Октября';
+        break;
+      case 11:
+        month = 'Ноября';
+        break;
+      case 12:
+        month = 'Декабря';
+    }
     final model = context.watch<patienceOrderModel>();
     return SizedBox(
       width: 335.w,
@@ -305,8 +380,11 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) {
-            return ChangeNotifierProvider(create: (context) => dateTimeBannerModel(),
-            child: dateTimeBanner(Model: model,),
+            return ChangeNotifierProvider(
+              create: (context) => dateTimeBannerModel(),
+              child: dateTimeBanner(
+                Model: model,
+              ),
             );
           },
         ),
@@ -320,10 +398,15 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: model.dayValide && model.timeValide
-                  ? Text(
-                      "${model.dob.day}, ${model.dob.hour} часов",
-                      style: TexxtStyle.placeHolderBlackSTyle,
-                    )
+                  ? DateTime.now().day == model.dob.day
+                      ? Text(
+                          "Сегодня ${model.dob.day} $month, ${model.dob.hour}:00",
+                          style: TexxtStyle.placeHolderBlackSTyle,
+                        )
+                      : Text(
+                          "Завтра ${model.dob.day} $month, ${model.dob.hour}:00",
+                          style: TexxtStyle.placeHolderBlackSTyle,
+                        )
                   : Text(
                       "Выберите дату и время",
                       style: TexxtStyle.placeHolderBlackSTyle,
@@ -338,7 +421,7 @@ class ChooseDateAndTimeInputField extends StatelessWidget {
 
 class dateTimeBanner extends StatelessWidget {
   patienceOrderModel Model;
-   dateTimeBanner({super.key,required this.Model});
+  dateTimeBanner({super.key, required this.Model});
   int val = -1;
   @override
   Widget build(BuildContext context) {
@@ -347,8 +430,7 @@ class dateTimeBanner extends StatelessWidget {
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24))),
+              topLeft: Radius.circular(24), topRight: Radius.circular(24))),
       width: MediaQuery.of(context).size.width,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -377,7 +459,7 @@ class dateTimeBanner extends StatelessWidget {
               "Выберите дату",
               style: TexxtStyle.subSubTitle,
             ),
-          const dropFieldDate(),
+            const dropFieldDate(),
             SizedBox(
               height: 10.h,
             ),
@@ -389,7 +471,9 @@ class dateTimeBanner extends StatelessWidget {
               ),
             ),
             const listViewTime(),
-             confirmDateButton(Model: Model,),
+            confirmDateButton(
+              Model: Model,
+            ),
           ],
         ),
       ),
@@ -399,7 +483,7 @@ class dateTimeBanner extends StatelessWidget {
 
 class confirmDateButton extends StatelessWidget {
   patienceOrderModel Model;
-   confirmDateButton({super.key,required this.Model});
+  confirmDateButton({super.key, required this.Model});
 
   @override
   Widget build(BuildContext context) {
@@ -417,17 +501,14 @@ class confirmDateButton extends StatelessWidget {
                         ? colorrs.accent
                         : colorrs.inactiveAccent),
                 elevation: const MaterialStatePropertyAll(0),
-                shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadiusDirectional.circular(
-                            10)))),
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.circular(10)))),
             onPressed: () async {
-             if(model.dayValide && model.timeValide) {
-               await model.saveDate(model.dob);
-               await Model.getDate();
-             }
-             Navigator.of(context).pop();
+              if (model.dayValide && model.timeValide) {
+                await model.saveDate(model.dob);
+                await Model.getDate();
+              }
+              Navigator.of(context).pop();
             },
             child: Text(
               "Подтвердить",
@@ -440,14 +521,13 @@ class confirmDateButton extends StatelessWidget {
   }
 }
 
-
 class listViewTime extends StatelessWidget {
   const listViewTime({super.key});
 
   @override
   Widget build(BuildContext context) {
     final model = context.watch<dateTimeBannerModel>();
-    return  SizedBox(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 40.h,
       child: ListView.builder(
@@ -455,44 +535,40 @@ class listViewTime extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: listTime.length,
           itemBuilder: (context, index) => Padding(
-            padding: EdgeInsets.only(left: 16.w),
-            child: GestureDetector(
-              onTap: () {
-                model.setIndex(index);
-                model.dob = DateTime(
-                    model.dob.year,
-                    model.dob.month,
-                    model.dob.day,
-                    int.parse(
-                        listTime[index].substring(0, 2)));
-                model.setTimeValide();
-                print(model.dob);
-
-              },
-              child: Container(
-                width: 70.w,
-                height: 40.h,
-                decoration: BoxDecoration(
-                    color: model.index == index
-                        ? colorrs.accent
-                        : colorrs.greyy,
-                    borderRadius:
-                    BorderRadius.circular(10)),
-                child: Center(
-                  child: Text(
-                    listTime[index],
-                    style: model.index == index
-                        ? TexxtStyle.bankTxtStyleWhite
-                        : TexxtStyle.bankTxtStyle,
+                padding: EdgeInsets.only(left: 16.w),
+                child: GestureDetector(
+                  onTap: () {
+                    model.setIndex(index);
+                    model.dob = DateTime(
+                        model.dob.year,
+                        model.dob.month,
+                        model.dob.day,
+                        int.parse(listTime[index].substring(0, 2)));
+                    model.setTimeValide();
+                    print(model.dob);
+                  },
+                  child: Container(
+                    width: 70.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        color: model.index == index
+                            ? colorrs.accent
+                            : colorrs.greyy,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        listTime[index],
+                        style: model.index == index
+                            ? TexxtStyle.bankTxtStyleWhite
+                            : TexxtStyle.bankTxtStyle,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          )),
+              )),
     );
   }
 }
-
 
 class dropFieldDate extends StatelessWidget {
   const dropFieldDate({super.key});
@@ -500,74 +576,110 @@ class dropFieldDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime dateTime = DateTime.now();
+    String month = '';
+    switch (dateTime.month) {
+      case 1:
+        month = 'Января';
+        break;
+      case 2:
+        month = 'Февраля';
+        break;
+      case 3:
+        month = 'Марта';
+        break;
+      case 4:
+        month = 'Апреля';
+        break;
+      case 5:
+        month = 'Мая';
+        break;
+      case 6:
+        month = 'Июня';
+        break;
+      case 7:
+        month = 'Июля';
+        break;
+      case 8:
+        month = 'Августа';
+        break;
+      case 9:
+        month = 'Сентября';
+        break;
+      case 10:
+        month = 'Октября';
+        break;
+      case 11:
+        month = 'Ноября';
+        break;
+      case 12:
+        month = 'Декабря';
+    }
     var nextDay = dateTime.day + 1;
+
     List<String> dateList = [
-      'Сегодня, ${dateTime.day} cентября',
-      'Завтра, ${nextDay} cентября'
+      'Сегодня, ${dateTime.day} $month',
+      'Завтра, ${nextDay} $month'
     ];
     final model = context.watch<dateTimeBannerModel>();
-    return  Center(
+    return Center(
         child: SizedBox(
-          width: 335.w,
-          height: 56.h,
-          child: Material(
-            child: ValueListenableBuilder(
-                valueListenable: model.dropValue,
-                builder: (BuildContext context, String value, _) {
-                  return DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 10.0.w, vertical: 15.0.h),
-                      fillColor: colorrs.greyy,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Colors.transparent, width: 0)),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Colors.transparent, width: 0)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Colors.transparent, width: 0)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Colors.transparent, width: 0)),
-                    ),
-                    isExpanded: true,
-                    hint: Text(
-                      'Сегодня, ${dateTime.day} cентября',
-                      style: TexxtStyle.blackSubTitle,
-                    ),
-                    icon: const ImageIcon(
-                        AssetImage("assets/dropDownIcon.png")),
-                    value: (value.isEmpty) ? null : value,
-                    onChanged: (choice) {
-                      model.dropValue.value = choice.toString();
-                      choice.toString() ==
-                          'Сегодня, ${dateTime.day} cентября'
-                          ? model.dob = DateTime(model.dob.year,
-                          model.dob.month, dateTime.day)
-                          : model.dob = DateTime(model.dob.year,
-                          model.dob.month, nextDay);
-                      model.setDayValide();
-                    },
-                    items: dateList
-                        .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ))
-                        .toList(),
-                  );
-                }),
-          ),
-        ));
+      width: 335.w,
+      height: 56.h,
+      child: Material(
+        child: ValueListenableBuilder(
+            valueListenable: model.dropValue,
+            builder: (BuildContext context, String value, _) {
+              return DropdownButtonFormField(
+                decoration: InputDecoration(
+                  filled: true,
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: 10.0.w, vertical: 15.0.h),
+                  fillColor: colorrs.greyy,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                          color: Colors.transparent, width: 0)),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                          color: Colors.transparent, width: 0)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                          color: Colors.transparent, width: 0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                          color: Colors.transparent, width: 0)),
+                ),
+                isExpanded: true,
+                hint: Text(
+                  'Сегодня, ${dateTime.day} $month',
+                  style: TexxtStyle.blackSubTitle,
+                ),
+                icon: const ImageIcon(AssetImage("assets/dropDownIcon.png")),
+                value: (value.isEmpty) ? null : value,
+                onChanged: (choice) {
+                  model.dropValue.value = choice.toString();
+                  choice.toString() == 'Сегодня, ${dateTime.day} $month'
+                      ? model.dob = DateTime(
+                          model.dob.year, model.dob.month, dateTime.day)
+                      : model.dob =
+                          DateTime(model.dob.year, model.dob.month, nextDay);
+                  model.setDayValide();
+                },
+                items: dateList
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ))
+                    .toList(),
+              );
+            }),
+      ),
+    ));
   }
 }
-
 
 class listPatient extends StatelessWidget {
   patienceOrderModel model;
@@ -576,10 +688,13 @@ class listPatient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: model.personList.length,
       itemBuilder: (context, int index) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.h),
+        padding: index == 0
+            ? EdgeInsets.symmetric(vertical: 0.h)
+            : EdgeInsets.only(top: 16.h),
         child: SizedBox(
           width: 335.w,
           child: dropWidget(
@@ -644,15 +759,17 @@ class _dropWidgetState extends State<dropWidget> {
                       child: Text(
                           "${widget.model.personList[widget.index].surname} ${widget.model.personList[widget.index].name}")),
                   Container(
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10)),
-                          color: colorrs.greyy),
-                      child: ImageIcon(
-                          const AssetImage("assets/dropDownIcon.png"),
-                          color: colorrs.iCGreyy,
-                          size: 20.w)),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                        color: colorrs.greyy),
+                    child: SvgPicture.asset(
+                      'assets/dropDown.svg',
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -868,17 +985,15 @@ class stayWishField extends StatelessWidget {
 
 class adressBanner extends StatefulWidget {
   patienceOrderModel Model;
-  adressBanner({super.key,required this.Model});
+  adressBanner({super.key, required this.Model});
 
   @override
   State<adressBanner> createState() => _adressBannerState();
 }
 
 class _adressBannerState extends State<adressBanner> {
-  
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -949,9 +1064,7 @@ class _adressBannerState extends State<adressBanner> {
                         ),
                       ),
                       Center(
-                        child: longitudeInputField(
-
-                        ),
+                        child: longitudeInputField(),
                       ),
                     ],
                   ),
@@ -971,9 +1084,7 @@ class _adressBannerState extends State<adressBanner> {
                           ),
                         ),
                         Center(
-                          child: latitudeInputField(
-
-                          ),
+                          child: latitudeInputField(),
                         ),
                       ],
                     ),
@@ -992,9 +1103,7 @@ class _adressBannerState extends State<adressBanner> {
                           ),
                         ),
                         Center(
-                          child: heightInputField(
-
-                          ),
+                          child: heightInputField(),
                         ),
                       ],
                     ),
@@ -1017,8 +1126,7 @@ class _adressBannerState extends State<adressBanner> {
                           ),
                         ),
                         Center(
-                          child: flatInputField(
-                          ),
+                          child: flatInputField(),
                         ),
                       ],
                     ),
@@ -1038,9 +1146,7 @@ class _adressBannerState extends State<adressBanner> {
                             ),
                           ),
                           Center(
-                            child: entranceInputField(
-
-                            ),
+                            child: entranceInputField(),
                           ),
                         ],
                       ),
@@ -1059,9 +1165,7 @@ class _adressBannerState extends State<adressBanner> {
                             ),
                           ),
                           Center(
-                            child: floorInputField(
-
-                            ),
+                            child: floorInputField(),
                           ),
                         ],
                       ),
@@ -1077,17 +1181,15 @@ class _adressBannerState extends State<adressBanner> {
                 ),
               ),
               Center(
-                child: domofonInputField(
-
-                ),
+                child: domofonInputField(),
               ),
-              saveAddress(
-
-              ),
+              saveAddress(),
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 10.h, bottom: 24.h),
-                  child: ConfirmButton(Model: widget.Model,),
+                  child: ConfirmButton(
+                    Model: widget.Model,
+                  ),
                 ),
               ),
             ]),
@@ -1097,7 +1199,9 @@ class _adressBannerState extends State<adressBanner> {
 }
 
 class saveAddress extends StatefulWidget {
-  saveAddress({super.key,  });
+  saveAddress({
+    super.key,
+  });
 
   @override
   State<saveAddress> createState() => _saveAddressState();
@@ -1120,7 +1224,7 @@ class _saveAddressState extends State<saveAddress> {
               value: model.saveVal,
               activeColor: colorrs.accent,
               onChanged: (value) {
-                  model.setSaveValide(value);
+                model.setSaveValide(value);
               }),
         ],
       ),
@@ -1129,7 +1233,9 @@ class _saveAddressState extends State<saveAddress> {
 }
 
 class addressInputField extends StatelessWidget {
-  addressInputField({super.key,  });
+  addressInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1156,7 +1262,9 @@ class addressInputField extends StatelessWidget {
 }
 
 class domofonInputField extends StatelessWidget {
-  domofonInputField({super.key,  });
+  domofonInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1183,7 +1291,9 @@ class domofonInputField extends StatelessWidget {
 }
 
 class longitudeInputField extends StatelessWidget {
-  longitudeInputField({super.key,});
+  longitudeInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1198,8 +1308,7 @@ class longitudeInputField extends StatelessWidget {
           model.longitude = int.parse(value);
           model.setLongitudeValide();
         },
-        placeholder:
-        model.longitude != 0 ? "${model.longitude}" : "188",
+        placeholder: model.longitude != 0 ? "${model.longitude}" : "188",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1211,7 +1320,9 @@ class longitudeInputField extends StatelessWidget {
 }
 
 class latitudeInputField extends StatelessWidget {
-  latitudeInputField({super.key,  });
+  latitudeInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1226,7 +1337,7 @@ class latitudeInputField extends StatelessWidget {
           model.width = int.parse(value);
           model.setWidthValide();
         },
-        placeholder: model.width != 0  ? "${model.width}" : "4",
+        placeholder: model.width != 0 ? "${model.width}" : "4",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1238,8 +1349,9 @@ class latitudeInputField extends StatelessWidget {
 }
 
 class heightInputField extends StatelessWidget {
-
-  heightInputField({super.key,  });
+  heightInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1254,7 +1366,7 @@ class heightInputField extends StatelessWidget {
           model.height = int.parse(value);
           model.setHeightValide();
         },
-        placeholder: model.height != 0  ? "${model.height}" : "8",
+        placeholder: model.height != 0 ? "${model.height}" : "8",
         placeholderStyle: TexxtStyle.blackSubTitle,
         decoration: const BoxDecoration(
           color: colorrs.greyy,
@@ -1266,8 +1378,9 @@ class heightInputField extends StatelessWidget {
 }
 
 class flatInputField extends StatelessWidget {
-
-  flatInputField({super.key,  });
+  flatInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1294,8 +1407,9 @@ class flatInputField extends StatelessWidget {
 }
 
 class entranceInputField extends StatelessWidget {
-
-  entranceInputField({super.key, });
+  entranceInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1322,8 +1436,9 @@ class entranceInputField extends StatelessWidget {
 }
 
 class floorInputField extends StatelessWidget {
-
-  floorInputField({super.key,});
+  floorInputField({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1401,7 +1516,6 @@ class _PatientsBannerState extends State<PatientsBanner> {
                   "Выбор пациента",
                   style: TexxtStyle.title2Text,
                 ),
-
               ],
             ),
           ),
@@ -1479,7 +1593,7 @@ List<String> listTime = [
 
 class ConfirmButton extends StatelessWidget {
   patienceOrderModel Model;
-  ConfirmButton({super.key,required this.Model});
+  ConfirmButton({super.key, required this.Model});
 
   @override
   Widget build(BuildContext context) {
@@ -1502,13 +1616,20 @@ class ConfirmButton extends StatelessWidget {
             elevation: const MaterialStatePropertyAll(0),
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)))),
-        onPressed: ()  async{
+        onPressed: () async {
           model.saveVal
-              ?
-          await model.saveAddress(model.address,model.longitude,model.width,model.height,model.flat,model.entrance,model.floor,model.intercom)
+              ? await model.saveAddress(
+                  model.address,
+                  model.longitude,
+                  model.width,
+                  model.height,
+                  model.flat,
+                  model.entrance,
+                  model.floor,
+                  model.intercom)
               : await model.clearAddress();
           Navigator.of(context).pop();
-       await  Model.getAddress();
+          await Model.getAddress();
         },
         child: Text(
           "Подтвердить",
@@ -1637,32 +1758,33 @@ class _itemAnalysesState extends State<itemAnalyses> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.only(bottom: 10.h),
+      padding: EdgeInsets.only(bottom: 10.h),
       child: SizedBox(
         width: 303.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             SizedBox(
-                width: 20.w,
-                height: 20.h,
-                child: Material(
-                  child: Checkbox(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      activeColor: colorrs.accent,
-                      checkColor: Colors.white,
-                      value: isChecked,
-                      onChanged: (val) {
-                        setState(() {
-                          isChecked = val!;
-                        });
-                      }),
-                ),
-
+            SizedBox(
+              width: 20.w,
+              height: 20.h,
+              child: Material(
+                child: Checkbox(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    activeColor: colorrs.accent,
+                    checkColor: Colors.white,
+                    value: isChecked,
+                    onChanged: (val) {
+                      setState(() {
+                        isChecked = val!;
+                      });
+                    }),
+              ),
             ),
-            SizedBox(width: 5.w,),
+            SizedBox(
+              width: 5.w,
+            ),
             Expanded(
               child: Text(
                 "${widget.listAnalyse[widget.index].title}",
@@ -1670,10 +1792,9 @@ class _itemAnalysesState extends State<itemAnalyses> {
                 style: TexxtStyle.subAnalyseText,
               ),
             ),
-             Text(
-                "${widget.listAnalyse[widget.index].price} ₽",
-                style: TexxtStyle.blackSubTitle,
-
+            Text(
+              "${widget.listAnalyse[widget.index].price} ₽",
+              style: TexxtStyle.blackSubTitle,
             ),
           ],
         ),

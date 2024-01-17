@@ -41,10 +41,12 @@ abstract class TexxtStyle {
       color: colorrs.subGreyy);
   static TextStyle placeHolderBlackSTyle = TextStyle(
       fontFamily: "SanFranciscoRegular", fontSize: 15.sp, color: Colors.black);
-  static TextStyle followingTxtStyle = TextStyle(
+  static TextStyle sfRegMain = TextStyle(
       fontFamily: "SanFranciscoRegular",
       fontSize: 15.sp,
       color: colorrs.accent);
+  static TextStyle followingTxtStyle = TextStyle(
+      fontFamily: "SanFranciscoLato", fontSize: 20.sp, color: colorrs.dot);
   static TextStyle bankTxtStyle = TextStyle(
       fontFamily: "SanFranciscoRegular",
       fontSize: 16.sp,

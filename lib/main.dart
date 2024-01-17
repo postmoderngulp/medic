@@ -21,7 +21,6 @@ void main() async {
       initialRoute: serviceNavigate.initialRoute,
       routes: serviceNavigate.routes,
       debugShowCheckedModeBanner: false,
-      home: const MyApp(),
     ),
     designSize: const Size(375, 812),
   ));
@@ -53,130 +52,107 @@ class _firstWidgetEnterState extends State<firstWidgetEnter> {
     return SafeArea(
       child: CupertinoPageScaffold(
           backgroundColor: Colors.white,
-          resizeToAvoidBottomInset: false,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 59.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                ),
-                child: Row(
-                  children: [
-                    Image.asset("assets/hello.png"),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Text(
-                      "Добро пожаловать!",
-                      style: TexxtStyle.title,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 23.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                ),
-                child: Text(
-                  "Войдите, чтобы пользоваться функциями приложения",
-                  style: TexxtStyle.subTitle,
-                ),
-              ),
-              SizedBox(
-                height: 64.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                ),
-                child: Text(
-                  "Вход по E-mail",
-                  style: TexxtStyle.subSubTitle,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                ),
-                child: SizedBox(
-                    width: 335.w,
-                    height: 48.h,
-                    child: CupertinoTextField(
-                      onChanged: (value) {
-                        model.email = value;
-                        setState(() {
-                          emailValid = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(model.email);
-                        });
-                      },
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 14.w, vertical: 14.h),
-                      placeholder: "example@mail.ru",
-                      placeholderStyle: TexxtStyle.placeHolderSTyle,
-                      decoration: const BoxDecoration(
-                        color: colorrs.greyy,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+          resizeToAvoidBottomInset: true,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 59.h,
+                  ),
+                  Row(
+                    children: [
+                      Image.asset("assets/hello.png"),
+                      SizedBox(
+                        width: 5.w,
                       ),
-                    )),
-              ),
-              SizedBox(
-                height: 32.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: SizedBox(
-                  width: 335.w,
-                  height: 56.h,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        elevation: const MaterialStatePropertyAll(0),
-                        backgroundColor: MaterialStatePropertyAll(emailValid
-                            ? colorrs.accent
-                            : colorrs.inactiveAccent),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)))),
-                    onPressed: () => emailValid
-                        ? model.sendEmail(model.email, context)
-                        : null,
-                    child: Text(
-                      "Далее",
-                      style: TexxtStyle.buttonStyleWhite,
+                      Text(
+                        "Добро пожаловать!",
+                        style: TexxtStyle.title,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 23.h,
+                  ),
+                  Text(
+                    "Войдите, чтобы пользоваться функциями приложения",
+                    style: TexxtStyle.subTitle,
+                  ),
+                  SizedBox(
+                    height: 64.h,
+                  ),
+                  Text(
+                    "Вход по E-mail",
+                    style: TexxtStyle.subSubTitle,
+                  ),
+                  SizedBox(
+                      width: 335.w,
+                      height: 48.h,
+                      child: CupertinoTextField(
+                        onChanged: (value) {
+                          model.email = value;
+                          setState(() {
+                            emailValid = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(model.email);
+                          });
+                        },
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 14.w, vertical: 14.h),
+                        placeholder: "example@mail.ru",
+                        placeholderStyle: TexxtStyle.placeHolderSTyle,
+                        decoration: const BoxDecoration(
+                          color: colorrs.greyy,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      )),
+                  SizedBox(
+                    height: 32.h,
+                  ),
+                  SizedBox(
+                    width: 335.w,
+                    height: 56.h,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          elevation: const MaterialStatePropertyAll(0),
+                          backgroundColor: MaterialStatePropertyAll(emailValid
+                              ? colorrs.accent
+                              : colorrs.inactiveAccent),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)))),
+                      onPressed: () => emailValid
+                          ? model.sendEmail(model.email, context)
+                          : null,
+                      child: Text(
+                        "Далее",
+                        style: TexxtStyle.buttonStyleWhite,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 238.h,
-              ),
-              Column(
-                children: [
+                  SizedBox(
+                    height: 238.h,
+                  ),
                   Center(
                     child: Text(
                       "Или войдите с помощью",
                       style: TexxtStyle.subSubTitle,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16.h,
-                    ),
-                    child: SizedBox(
-                        width: 335.w,
-                        height: 60.h,
-                        child: const YandexEnterButton()),
+                  SizedBox(
+                    height: 16.h,
                   ),
+                  SizedBox(
+                      width: 335.w,
+                      height: 60.h,
+                      child: const YandexEnterButton()),
                 ],
               ),
-            ],
+            ),
           )),
     );
   }
@@ -187,6 +163,7 @@ class YandexEnterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<firstWindowModel>();
     return ElevatedButton(
       style: ButtonStyle(
           shape: MaterialStatePropertyAll(
@@ -197,7 +174,7 @@ class YandexEnterButton extends StatelessWidget {
           ),
           side: const MaterialStatePropertyAll(
               BorderSide(width: 1.5, color: colorrs.greyy))),
-      onPressed: () {},
+      onPressed: () => model.goToEmailCodeWidget(context, model.email),
       child: Text(
         "Войти с Яндекс",
         style: TexxtStyle.buttonStyleBlack,

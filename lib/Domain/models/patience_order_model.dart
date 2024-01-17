@@ -13,6 +13,8 @@ import '../entity/person.dart';
 class patienceOrderModel extends ChangeNotifier {
   List<person> personList = [];
   List<analyse> analyseList = [];
+  int sum = 0;
+  int countAnalyse = 0;
   bool saveVal = false;
   final dropValue = ValueNotifier('');
   int index = -1;
@@ -41,6 +43,7 @@ class patienceOrderModel extends ChangeNotifier {
       intercom: '',
       buildingType: 0);
   DateTime dob = DateTime.now();
+  String date = '';
   String phone = '';
   int price = 0;
   String comment = '';
@@ -48,8 +51,6 @@ class patienceOrderModel extends ChangeNotifier {
   patienceOrderModel() {
     _setup();
   }
-
-
 
   void _setup() async {
     if (!Hive.isAdapterRegistered(2)) {
@@ -64,20 +65,29 @@ class patienceOrderModel extends ChangeNotifier {
     if (!Hive.isAdapterRegistered(3)) {
       Hive.registerAdapter(clientAddressAdapter());
     }
+    final api = Api();
+    const storage = FlutterSecureStorage();
+    final box = await Hive.openBox<person>(namesBox.listPersonDataBox);
+    final token = await storage.read(key: FluttSecureStorage.key);
+    // person user = await api.getProfile(token!);
+    // box.add(user);
     final boxAddress =
         await Hive.openBox<clientAddress>(namesBox.adressDataBox);
     final boxAnalyse = await Hive.openBox<analyse>(namesBox.LIstAnalyseDataBox);
-    final box = await Hive.openBox<person>(namesBox.listPersonDataBox);
     if (boxAddress.get('key') != null) {
       adress = boxAddress.get('key')!;
     }
     personList = box.values.toList();
     analyseList = boxAnalyse.values.toList();
+    for (int i = 0; i < analyseList.length; i++) {
+      sum += analyseList[i].price;
+    }
+    for (int i = 0; i < analyseList.length; i++) {
+      countAnalyse++;
+    }
     setPersonValide();
     notifyListeners();
   }
-
-
 
   void setAdresValide() {
     adress.address.isNotEmpty ? addressValide = true : addressValide = false;
@@ -98,8 +108,6 @@ class patienceOrderModel extends ChangeNotifier {
     dob.hour != 0 ? timeValide = true : timeValide = false;
     notifyListeners();
   }
-
-
 
   void setWidthValide() {
     adress.width != 0 ? widthValide = true : widthValide = false;
@@ -146,10 +154,9 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
-  Future<void> getAddress() async{
-    final boxAddress = await Hive.openBox<clientAddress>(namesBox.adressDataBox);
+  Future<void> getAddress() async {
+    final boxAddress =
+        await Hive.openBox<clientAddress>(namesBox.adressDataBox);
     if (boxAddress.get('key') != null) {
       adress = boxAddress.get('key')!;
       setAdresValide();
@@ -164,7 +171,7 @@ class patienceOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getDate() async{
+  Future<void> getDate() async {
     final boxDate = await Hive.openBox<DateTime>(namesBox.dateDataBox);
     if (boxDate.get('dateVal') != null) {
       dob = boxDate.get('dateVal')!;
@@ -176,6 +183,7 @@ class patienceOrderModel extends ChangeNotifier {
 
   void createOffer(BuildContext context, clientAddress adress, String dob,
       List<person> userList, String phone, int price, String comment) async {
+    goToPaymentWidget(context);
     final api = Api();
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: FluttSecureStorage.key);

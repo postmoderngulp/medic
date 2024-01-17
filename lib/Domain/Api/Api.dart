@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:medic/Domain/entity/clientAddress.dart';
 import 'package:medic/Domain/entity/news.dart';
 import 'package:http/http.dart' as http;
@@ -35,6 +36,10 @@ class Api {
       body: jsonBody,
     );
     final el = Token.fromJson(jsonDecode(response.body));
+    const storage = FlutterSecureStorage();
+    if (response.statusCode == 200) {
+      await storage.write(key: 'session', value: 'true');
+    }
     print(response.statusCode);
     print(response.body);
     print(el.token);

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <color name="yourColor">#83A0F8 </color>
+  <color name="grad1">#6269F00D </color>
+   <color name="grad2">#3740F5A6 </color>
+    <color name="grad3">#2254F5 </color>
+     <color name="grad4">#3740F5A6 </color>
 </resources>
