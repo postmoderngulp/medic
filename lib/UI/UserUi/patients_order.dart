@@ -293,8 +293,12 @@ class ChooseAdressInputField extends StatelessWidget {
           builder: (BuildContext context) {
             return ChangeNotifierProvider(
               create: (context) => addressBannerModel(),
-              child: adressBanner(
-                Model: model,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: adressBanner(
+                  Model: model,
+                ),
               ),
             );
           },
@@ -432,50 +436,68 @@ class dateTimeBanner extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24), topRight: Radius.circular(24))),
       width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 24.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   "Дата и время",
                   style: TexxtStyle.title2Text,
                 ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: SvgPicture.asset(
+                    "assets/cancel.svg",
+                    width: 24.w,
+                    height: 24.h,
+                  ),
+                ),
               ],
             ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Text(
+          ),
+          SizedBox(
+            height: 24.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Text(
               "Выберите дату",
               style: TexxtStyle.subSubTitle,
             ),
-            const dropFieldDate(),
-            SizedBox(
-              height: 10.h,
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          const dropFieldDate(),
+          SizedBox(
+            height: 32.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Text(
+              "Выберите время",
+              style: TexxtStyle.subSubTitle,
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 5.h),
-              child: Text(
-                "Выберите время",
-                style: TexxtStyle.subSubTitle,
-              ),
-            ),
-            const listViewTime(),
-            confirmDateButton(
-              Model: Model,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          const listViewTime(),
+          confirmDateButton(
+            Model: Model,
+          ),
+        ],
       ),
     );
   }
@@ -1005,194 +1027,198 @@ class _adressBannerState extends State<adressBanner> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24), topRight: Radius.circular(24))),
       width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 24.h,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Адрес сдачи анализов",
-                      style: TexxtStyle.title2Text,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10.w),
-                      child: Image.asset("assets/mapImage.png"),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Column(
+      child: SingleChildScrollView(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Ваш адрес",
-                    style: TexxtStyle.subSubTitle,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 24.h,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Адрес сдачи анализов",
+                          style: TexxtStyle.title2Text,
+                        ),
+                        const Spacer(),
+                        SvgPicture.asset('assets/map.svg')
+                      ],
+                    ),
                   ),
                   SizedBox(
-                    height: 5.h,
+                    height: 10.h,
                   ),
-                  Center(child: addressInputField()),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 5.h),
-                        child: Text(
-                          "Долгота",
-                          style: TexxtStyle.subSubTitle,
-                        ),
+                      Text(
+                        "Ваш адрес",
+                        style: TexxtStyle.subSubTitle,
                       ),
-                      Center(
-                        child: longitudeInputField(),
+                      SizedBox(
+                        height: 5.h,
                       ),
+                      Center(child: addressInputField()),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 16.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: 5.h,
-                          ),
-                          child: Text(
-                            "Широта",
-                            style: TexxtStyle.subSubTitle,
-                          ),
-                        ),
-                        Center(
-                          child: latitudeInputField(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: Text(
-                            "Высота",
-                            style: TexxtStyle.subSubTitle,
-                          ),
-                        ),
-                        Center(
-                          child: heightInputField(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: Text(
-                            "Квартира",
-                            style: TexxtStyle.subSubTitle,
-                          ),
-                        ),
-                        Center(
-                          child: flatInputField(),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 5.h,
-                            ),
-                            child: Text(
-                              "Подъезд",
-                              style: TexxtStyle.subSubTitle,
-                            ),
-                          ),
-                          Center(
-                            child: entranceInputField(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 18.w),
-                      child: Column(
+                  SizedBox(height: 10.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: EdgeInsets.only(bottom: 5.h),
                             child: Text(
-                              "Этаж",
+                              "Долгота",
                               style: TexxtStyle.subSubTitle,
                             ),
                           ),
                           Center(
-                            child: floorInputField(),
+                            child: longitudeInputField(),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 5.h, top: 10.h),
-                child: Text(
-                  "Домофон",
-                  style: TexxtStyle.subSubTitle,
-                ),
-              ),
-              Center(
-                child: domofonInputField(),
-              ),
-              saveAddress(),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 10.h, bottom: 24.h),
-                  child: ConfirmButton(
-                    Model: widget.Model,
+                      Padding(
+                        padding: EdgeInsets.only(left: 16.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 5.h,
+                              ),
+                              child: Text(
+                                "Широта",
+                                style: TexxtStyle.subSubTitle,
+                              ),
+                            ),
+                            Center(
+                              child: latitudeInputField(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 5.h),
+                              child: Text(
+                                "Высота",
+                                style: TexxtStyle.subSubTitle,
+                              ),
+                            ),
+                            Center(
+                              child: heightInputField(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-            ]),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 5.h),
+                              child: Text(
+                                "Квартира",
+                                style: TexxtStyle.subSubTitle,
+                              ),
+                            ),
+                            Center(
+                              child: flatInputField(),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 16.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 5.h,
+                                ),
+                                child: Text(
+                                  "Подъезд",
+                                  style: TexxtStyle.subSubTitle,
+                                ),
+                              ),
+                              Center(
+                                child: entranceInputField(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 18.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 5.h),
+                                child: Text(
+                                  "Этаж",
+                                  style: TexxtStyle.subSubTitle,
+                                ),
+                              ),
+                              Center(
+                                child: floorInputField(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.h, top: 10.h),
+                    child: Text(
+                      "Домофон",
+                      style: TexxtStyle.subSubTitle,
+                    ),
+                  ),
+                  Center(
+                    child: domofonInputField(),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  saveAddress(),
+                  SizedBox(
+                    height: 18.h,
+                  ),
+                  Center(
+                    child: ConfirmButton(
+                      Model: widget.Model,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                ])),
       ),
     );
   }
@@ -1211,23 +1237,20 @@ class _saveAddressState extends State<saveAddress> {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<addressBannerModel>();
-    return Padding(
-      padding: EdgeInsets.only(left: 30.w, top: 5.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Сохранить этот адрес?",
-            style: TexxtStyle.HeadlineMedium,
-          ),
-          CupertinoSwitch(
-              value: model.saveVal,
-              activeColor: colorrs.accent,
-              onChanged: (value) {
-                model.setSaveValide(value);
-              }),
-        ],
-      ),
+    return Row(
+      children: [
+        Text(
+          "Сохранить этот адрес?",
+          style: TexxtStyle.HeadlineMedium,
+        ),
+        const Spacer(),
+        CupertinoSwitch(
+            value: model.saveVal,
+            activeColor: colorrs.accent,
+            onChanged: (value) {
+              model.setSaveValide(value);
+            }),
+      ],
     );
   }
 }
